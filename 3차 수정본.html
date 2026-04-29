@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CULT SOCIETY</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --paper: #f2ede6;
+  --paper-dark: #e8e1d6;
+  --ink: #1a1714;
+  --ink-light: #6b6259;
+  --red: #c0251a;
+  --border: #c9c0b2;
+  --white: #faf7f2;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 300;
+  cursor: crosshair;
+}
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+/* ─── NAV ─── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 48px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(242,237,230,0.92);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.logo-dot {
+  color: var(--red);
+  font-size: 22px;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+nav ul {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+nav ul a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+nav ul a:hover { color: var(--ink); }
+
+.nav-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  cursor: crosshair;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+.btn-solid {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  border: none;
+  padding: 8px 16px;
+  cursor: crosshair;
+  transition: background 0.2s;
+}
+.btn-solid:hover { background: var(--red); }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 80px 48px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  min-height: 70vh;
+  align-items: end;
+}
+
+.hero-left {
+  padding-right: 60px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 8vw, 110px);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 2px;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: var(--red);
+}
+
+.hero-body {
+  margin-top: 36px;
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 2;
+  color: var(--ink-light);
+  max-width: 360px;
+  border-left: 2px solid var(--red);
+  padding-left: 16px;
+}
+
+.hero-search {
+  display: flex;
+  margin-top: 32px;
+  border: 1px solid var(--ink);
+  max-width: 400px;
+}
+
+.hero-search input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  outline: none;
+  letter-spacing: 1px;
+}
+
+.hero-search input::placeholder { color: var(--ink-light); }
+
+.hero-search button {
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  padding: 0 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: crosshair;
+}
+
+/* HERO RIGHT — masonry preview */
+.hero-right {
+  padding-left: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  align-self: stretch;
+  padding-top: 0;
+}
+
+.hero-card {
+  background: var(--paper-dark);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+  transition: transform 0.3s ease;
+}
+.hero-card:hover { transform: translateY(-3px); }
+
+.hero-card:nth-child(1) { grid-row: 1 / 3; }
+
+.hero-card-img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card:nth-child(1) .hero-card-img { aspect-ratio: 2/4; font-size: 80px; }
+.hero-card:nth-child(2) .hero-card-img,
+.hero-card:nth-child(3) .hero-card-img { aspect-ratio: 1/1; font-size: 48px; }
+
+.stamp {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 3px 8px;
+  background: rgba(242,237,230,0.85);
+}
+
+.hero-card-info {
+  padding: 12px 14px;
+}
+
+.hero-card-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+.hero-card-name {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 3px 0;
+  color: var(--ink);
+}
+
+.hero-card-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.price-up { color: var(--red); font-size: 9px; }
+.price-down { color: var(--ink-light); font-size: 9px; }
+
+/* ─── MASONRY GRID ─── */
+.section {
+  padding: 64px 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 3px;
+}
+
+.section-mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+/* FILTER TABS */
+.filters {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: crosshair;
+  color: var(--ink-light);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.filter-tab:hover { color: var(--ink); }
+.filter-tab.on {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* PINTEREST GRID */
+.pin-grid {
+  columns: 5;
+  column-gap: 12px;
+}
+
+.pin-card {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  cursor: crosshair;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(26,23,20,0.1);
+}
+
+.pin-img {
+  width: 100%;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+/* varied heights for masonry feel */
+.pin-card:nth-child(1) .pin-img  { aspect-ratio: 2/3; font-size: 56px; }
+.pin-card:nth-child(2) .pin-img  { aspect-ratio: 3/4; }
+.pin-card:nth-child(3) .pin-img  { aspect-ratio: 1/1; font-size: 40px; }
+.pin-card:nth-child(4) .pin-img  { aspect-ratio: 2/3; font-size: 52px; }
+.pin-card:nth-child(5) .pin-img  { aspect-ratio: 4/5; font-size: 44px; }
+.pin-card:nth-child(6) .pin-img  { aspect-ratio: 1/1; font-size: 38px; }
+.pin-card:nth-child(7) .pin-img  { aspect-ratio: 3/5; font-size: 56px; }
+.pin-card:nth-child(8) .pin-img  { aspect-ratio: 3/4; font-size: 44px; }
+.pin-card:nth-child(9) .pin-img  { aspect-ratio: 2/3; font-size: 48px; }
+.pin-card:nth-child(10) .pin-img { aspect-ratio: 1/1; font-size: 36px; }
+
+.pin-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 3px 7px;
+  text-transform: uppercase;
+}
+.badge-cult { background: var(--ink); color: var(--white); }
+.badge-rise { background: var(--red); color: var(--white); }
+.badge-rare { background: var(--paper); color: var(--ink); border: 1px solid var(--ink); }
+
+.pin-save {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  background: rgba(242,237,230,0.9);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.pin-card:hover .pin-save { opacity: 1; }
+
+.pin-body {
+  padding: 12px 14px 14px;
+}
+
+.pin-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+.pin-name {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 3px 0 2px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.pin-season {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: var(--ink-light);
+  letter-spacing: 1px;
+}
+
+.pin-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.pin-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.pin-vs {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  text-align: right;
+  line-height: 1.6;
+}
+.vs-label { color: var(--ink-light); }
+.vs-up { color: var(--red); }
+.vs-dn { color: var(--ink-light); }
+
+/* ─── MARQUEE ─── */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 0;
+  background: var(--ink);
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--paper);
+  padding: 0 28px;
+  border-right: 1px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.7;
+}
+.marquee-item .m-name { color: var(--white); opacity: 1; }
+.marquee-item .m-up { color: #e07060; }
+.marquee-item .m-dn { color: #888; }
+
+/* ─── HOW ─── */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+.how-card {
+  padding: 40px 36px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.how-card:last-child { border-right: none; }
+
+.how-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.how-title {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+
+.how-desc {
+  font-size: 12px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+
+.how-accent {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 8px;
+  color: var(--ink);
+}
+
+.footer-right {
+  text-align: right;
+}
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  line-height: 2;
+}
+
+/* ─── MD CURATION ─── */
+.md-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.md-feature {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+}
+
+.md-feature-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 96px;
+  border-bottom: 1px solid var(--border);
+}
+
+.md-feature-body {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.md-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  border: 1px solid var(--red);
+  display: inline-block;
+  padding: 2px 8px;
+  width: fit-content;
+}
+
+.md-feature-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.md-feature-name {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.md-feature-desc {
+  font-size: 12px;
+  line-height: 2;
+  color: var(--ink-light);
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
+}
+
+.md-feature-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.md-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  color: var(--ink);
+}
+
+.md-retail {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  margin-top: 4px;
+}
+
+.md-picks {
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.md-pick-card {
+  background: var(--white);
+  display: flex;
+  gap: 0;
+  flex: 1;
+  cursor: crosshair;
+  transition: background 0.2s;
+}
+.md-pick-card:hover { background: var(--paper-dark); }
+
+.md-pick-img {
+  width: 100px;
+  flex-shrink: 0;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  border-right: 1px solid var(--border);
+}
+
+.md-pick-body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.md-pick-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+.md-pick-name {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.md-pick-desc {
+  font-size: 11px;
+  color: var(--ink-light);
+  line-height: 1.8;
+  margin-top: 2px;
+}
+
+.md-pick-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* ─── BRAND RANKING ─── */
+.rank-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.rank-list {
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  cursor: crosshair;
+  transition: background 0.15s;
+}
+.rank-item:hover { background: var(--paper-dark); }
+.rank-item:last-child { border-bottom: none; }
+
+.rank-top3 { background: var(--paper-dark); }
+.rank-top3 .rank-num { color: var(--ink); }
+
+.rank-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--border);
+  letter-spacing: 2px;
+  width: 36px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.rank-info { flex: 1; }
+
+.rank-brand {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.rank-origin {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.rank-right { text-align: right; }
+
+.rank-score {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.rank-change {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-left > * {
+  animation: fadeUp 0.7s ease both;
+}
+.hero-left > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-left > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-left > *:nth-child(3) { animation-delay: 0.3s; }
+
+.pin-card {
+  animation: fadeUp 0.5s ease both;
+}
+.pin-card:nth-child(1)  { animation-delay: 0.05s; }
+.pin-card:nth-child(2)  { animation-delay: 0.1s; }
+.pin-card:nth-child(3)  { animation-delay: 0.15s; }
+.pin-card:nth-child(4)  { animation-delay: 0.2s; }
+.pin-card:nth-child(5)  { animation-delay: 0.25s; }
+.pin-card:nth-child(6)  { animation-delay: 0.3s; }
+.pin-card:nth-child(7)  { animation-delay: 0.35s; }
+.pin-card:nth-child(8)  { animation-delay: 0.4s; }
+.pin-card:nth-child(9)  { animation-delay: 0.45s; }
+.pin-card:nth-child(10) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">CULT<span class="logo-dot">·</span>SOCIETY</div>
+  <ul>
+    <li><a href="#">탐색</a></li>
+    <li><a href="#">시세</a></li>
+    <li><a href="#">거래</a></li>
+    <li><a href="#">아카이브</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-ghost">로그인</button>
+    <button class="btn-solid">판매하기</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="hero-eyebrow">Archive Fashion · Price Tracking · Secondhand</div>
+      <h1 class="hero-title">
+        옷에는<br>
+        <em>역사가</em><br>
+        있다
+      </h1>
+      <div class="hero-body">
+        <p class="hero-desc">
+          빈티지, 세컨핸드, 아카이브 피스.<br>
+          발매가부터 지금까지 — 당신이 찾던 그 옷의<br>진짜 가치를 추적합니다.
+        </p>
+        <div class="hero-search">
+          <input type="text" placeholder="브랜드, 시즌, 아이템명...">
+          <button>search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO CARDS -->
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-img">
+        🧥
+        <div class="stamp">cult piece</div>
+      </div>
+      <div class="hero-card-info">
+        <div class="hero-card-brand">Raf Simons</div>
+        <div class="hero-card-name">Consumed Overcoat</div>
+        <div class="hero-card-price">
+          ₩ 3,200,000
+          <span class="price-up">▲ 184%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-img">
+        👗
+        <div class="stamp">rising</div>
+      </div>
+      <div class="hero-card-info">
+        <div class="hero-card-brand">Comme des Garçons</div>
+        <div class="hero-card-name">Heart Patch Hoodie</div>
+        <div class="hero-card-price">
+          ₩ 580,000
+          <span class="price-up">▲ 62%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-img">
+        🥿
+        <div class="stamp">archive</div>
+      </div>
+      <div class="hero-card-info">
+        <div class="hero-card-brand">Maison Margiela</div>
+        <div class="hero-card-name">Tabi Ankle Boot</div>
+        <div class="hero-card-price">
+          ₩ 890,000
+          <span class="price-up">▲ 71%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="m-name">마르지엘라 타비부츠 '12</span><span class="m-up">↑ 8.4%</span></div>
+    <div class="marquee-item"><span class="m-name">꼼데가르송 하트 후드 '09</span><span class="m-dn">↓ 3.1%</span></div>
+    <div class="marquee-item"><span class="m-name">이세이미야케 플리츠플리즈 '98</span><span class="m-up">↑ 5.2%</span></div>
+    <div class="marquee-item"><span class="m-name">준야 와타나베 × 리바이스 '03</span><span class="m-up">↑ 12.7%</span></div>
+    <div class="marquee-item"><span class="m-name">RAF SIMONS Consumed '01</span><span class="m-up">↑ 9.3%</span></div>
+    <div class="marquee-item"><span class="m-name">헬무트랭 빈티지 카고 '99</span><span class="m-dn">↓ 1.8%</span></div>
+    <div class="marquee-item"><span class="m-name">요지야마모토 울 블레이저 '05</span><span class="m-up">↑ 14.2%</span></div>
+    <!-- duplicate -->
+    <div class="marquee-item"><span class="m-name">마르지엘라 타비부츠 '12</span><span class="m-up">↑ 8.4%</span></div>
+    <div class="marquee-item"><span class="m-name">꼼데가르송 하트 후드 '09</span><span class="m-dn">↓ 3.1%</span></div>
+    <div class="marquee-item"><span class="m-name">이세이미야케 플리츠플리즈 '98</span><span class="m-up">↑ 5.2%</span></div>
+    <div class="marquee-item"><span class="m-name">준야 와타나베 × 리바이스 '03</span><span class="m-up">↑ 12.7%</span></div>
+    <div class="marquee-item"><span class="m-name">RAF SIMONS Consumed '01</span><span class="m-up">↑ 9.3%</span></div>
+    <div class="marquee-item"><span class="m-name">헬무트랭 빈티지 카고 '99</span><span class="m-dn">↓ 1.8%</span></div>
+    <div class="marquee-item"><span class="m-name">요지야마모토 울 블레이저 '05</span><span class="m-up">↑ 14.2%</span></div>
+  </div>
+</div>
+
+<!-- PINTEREST GRID -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-title">지금 올라온 피스들</div>
+    <div class="section-mono">실시간 업데이트 · 4,218개</div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-tab on">전체</button>
+    <button class="filter-tab">시세 상승</button>
+    <button class="filter-tab">발매가 이하</button>
+    <button class="filter-tab">아카이브</button>
+    <button class="filter-tab">컬래버</button>
+    <button class="filter-tab">일본 빈티지</button>
+  </div>
+
+  <div class="pin-grid">
+
+    <div class="pin-card">
+      <div class="pin-img">🧥
+        <div class="pin-badge badge-cult">Cult</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Raf Simons</div>
+        <div class="pin-name">Consumed 오버사이즈 코트</div>
+        <div class="pin-season">2001 F/W · Size 48 · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 3,200,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+184%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👗
+        <div class="pin-badge badge-rise">↑ 9%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Comme des Garçons</div>
+        <div class="pin-name">하트 패치 후드 집업</div>
+        <div class="pin-season">2009 S/S · Size M · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 580,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+62%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👖
+        <div class="pin-badge badge-rare">Rare</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Helmut Lang</div>
+        <div class="pin-name">빈티지 스키니 카고</div>
+        <div class="pin-season">1999 F/W · Size 29 · Grade B+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 420,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+38%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👟
+        <div class="pin-badge badge-rise">↑ 13%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Junya Watanabe × Levi's</div>
+        <div class="pin-name">데님 재킷 패치워크</div>
+        <div class="pin-season">2003 S/S · Size S · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 1,450,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+210%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🥿
+        <div class="pin-badge badge-cult">Cult</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Maison Margiela</div>
+        <div class="pin-name">타비 스플릿토 로퍼</div>
+        <div class="pin-season">2014 F/W · Size 37 · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 760,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+46%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🧣
+        <div class="pin-badge badge-rare">Rare</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Issey Miyake</div>
+        <div class="pin-name">플리츠 플리즈 롱 드레스</div>
+        <div class="pin-season">1998 S/S · Size 2 · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 390,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-dn">-12%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🧤
+        <div class="pin-badge badge-cult">Cult</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Yohji Yamamoto</div>
+        <div class="pin-name">아시메트릭 울 블레이저</div>
+        <div class="pin-season">2005 F/W · Size 3 · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 2,100,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+155%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👕
+        <div class="pin-badge badge-rise">↑ 5%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Ann Demeulemeester</div>
+        <div class="pin-name">드레이프 라이더 셔츠</div>
+        <div class="pin-season">2007 S/S · Size 36 · Grade B+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 680,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+89%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🥾
+        <div class="pin-badge badge-rare">Rare</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Gomme</div>
+        <div class="pin-name">워크 부츠 레더</div>
+        <div class="pin-season">2002 F/W · Size 42 · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 340,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+28%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🧦
+        <div class="pin-badge badge-rise">↑ 7%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Number (N)ine</div>
+        <div class="pin-name">니트 카디건 오버핏</div>
+        <div class="pin-season">2004 F/W · Size 2 · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 520,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+73%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MD CURATION -->
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-title">MD'S PICK</div>
+      <div class="section-mono" style="margin-top:6px;">이번 주 MD가 직접 선정한 아카이브 피스 · 매주 월요일 업데이트</div>
+    </div>
+    <div class="section-mono" style="color:var(--red); border:1px solid var(--red); padding:6px 14px; font-size:9px; letter-spacing:2px;">
+      2026 W.18
+    </div>
+  </div>
+
+  <div class="md-grid">
+    <div class="md-feature">
+      <div class="md-feature-img">🧥</div>
+      <div class="md-feature-body">
+        <div class="md-tag">MD NOTE</div>
+        <div class="md-feature-brand">Raf Simons</div>
+        <div class="md-feature-name">Consumed Period 오버코트 — 2001 F/W</div>
+        <div class="md-feature-desc">
+          라프 시몬스가 스타를 꿈꾸는 청춘의 불안을 직물로 번역한 시즌. Consumed는 단순한 컬렉션명이 아니라 소비사회에 대한 선언이었다. 20년이 지난 지금, 이 코트는 그 시대를 증언하는 가장 명확한 오브제다.
+        </div>
+        <div class="md-feature-footer">
+          <div>
+            <div class="md-price">₩ 3,200,000</div>
+            <div class="md-retail">발매가 ₩ 1,120,000 · +184%</div>
+          </div>
+          <button class="btn-solid" style="font-size:9px; padding:10px 20px;">거래 보기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="md-picks">
+      <div class="md-pick-card">
+        <div class="md-pick-img">👗</div>
+        <div class="md-pick-body">
+          <div class="md-tag">MD NOTE</div>
+          <div class="md-pick-brand">Comme des Garçons</div>
+          <div class="md-pick-name">하트 패치 후드 — 2009 S/S</div>
+          <div class="md-pick-desc">CDG PLAY가 아직 순수했던 시절. 가와쿠보의 원초적 유머가 담긴 피스.</div>
+          <div class="md-pick-price">₩ 580,000 <span class="vs-up">+62%</span></div>
+        </div>
+      </div>
+
+      <div class="md-pick-card">
+        <div class="md-pick-img">🥿</div>
+        <div class="md-pick-body">
+          <div class="md-tag">MD NOTE</div>
+          <div class="md-pick-brand">Maison Margiela</div>
+          <div class="md-pick-name">타비 앵클 부츠 — 2012 S/S</div>
+          <div class="md-pick-desc">발굽 모양의 그 부츠. 마르지엘라가 익명성 뒤에서 남긴 가장 강렬한 서명.</div>
+          <div class="md-pick-price">₩ 890,000 <span class="vs-up">+71%</span></div>
+        </div>
+      </div>
+
+      <div class="md-pick-card">
+        <div class="md-pick-img">👟</div>
+        <div class="md-pick-body">
+          <div class="md-tag">MD NOTE</div>
+          <div class="md-pick-brand">Junya Watanabe × Levi's</div>
+          <div class="md-pick-name">데님 패치워크 재킷 — 2003 S/S</div>
+          <div class="md-pick-desc">와타나베가 미국의 워크웨어를 해체하고 재봉한 컬래버의 정수.</div>
+          <div class="md-pick-price">₩ 1,450,000 <span class="vs-up">+210%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND RANKING -->
+<section class="section">
+  <div class="section-head">
+    <div>
+      <div class="section-title">ARCHIVE BRAND RANKING</div>
+      <div class="section-mono" style="margin-top:6px;">거래량 · 시세 상승률 · 희소성 종합 지수 기준</div>
+    </div>
+    <div class="section-mono">이번 주 기준 · 실시간 집계</div>
+  </div>
+
+  <div class="rank-grid">
+    <div class="rank-list">
+      <div class="rank-item rank-top3">
+        <div class="rank-num">01</div>
+        <div class="rank-info">
+          <div class="rank-brand">Maison Margiela</div>
+          <div class="rank-origin">Belgium · 1988–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">98.4</div>
+          <div class="vs-up rank-change">▲ 2.1</div>
+        </div>
+      </div>
+      <div class="rank-item rank-top3">
+        <div class="rank-num">02</div>
+        <div class="rank-info">
+          <div class="rank-brand">Raf Simons</div>
+          <div class="rank-origin">Belgium · 1995–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">96.7</div>
+          <div class="vs-up rank-change">▲ 0.8</div>
+        </div>
+      </div>
+      <div class="rank-item rank-top3">
+        <div class="rank-num">03</div>
+        <div class="rank-info">
+          <div class="rank-brand">Comme des Garçons</div>
+          <div class="rank-origin">Japan · 1969–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">95.2</div>
+          <div class="vs-dn rank-change">▼ 0.3</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">04</div>
+        <div class="rank-info">
+          <div class="rank-brand">Yohji Yamamoto</div>
+          <div class="rank-origin">Japan · 1972–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">93.8</div>
+          <div class="vs-up rank-change">▲ 1.4</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">05</div>
+        <div class="rank-info">
+          <div class="rank-brand">Helmut Lang</div>
+          <div class="rank-origin">Austria · 1986–2005</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">91.5</div>
+          <div class="vs-up rank-change">▲ 3.2</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">06</div>
+        <div class="rank-info">
+          <div class="rank-brand">Ann Demeulemeester</div>
+          <div class="rank-origin">Belgium · 1985–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">89.3</div>
+          <div class="vs-up rank-change">▲ 0.5</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">07</div>
+        <div class="rank-info">
+          <div class="rank-brand">Junya Watanabe</div>
+          <div class="rank-origin">Japan · 1992–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">87.9</div>
+          <div class="vs-dn rank-change">▼ 1.1</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">08</div>
+        <div class="rank-info">
+          <div class="rank-brand">Issey Miyake</div>
+          <div class="rank-origin">Japan · 1970–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">86.4</div>
+          <div class="vs-up rank-change">▲ 0.9</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">09</div>
+        <div class="rank-info">
+          <div class="rank-brand">Number (N)ine</div>
+          <div class="rank-origin">Japan · 1996–2009</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">85.1</div>
+          <div class="vs-up rank-change">▲ 4.7</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">10</div>
+        <div class="rank-info">
+          <div class="rank-brand">Dries Van Noten</div>
+          <div class="rank-origin">Belgium · 1986–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">83.7</div>
+          <div class="vs-dn rank-change">▼ 0.6</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-list">
+      <div class="rank-item">
+        <div class="rank-num">11</div>
+        <div class="rank-info">
+          <div class="rank-brand">Undercover</div>
+          <div class="rank-origin">Japan · 1990–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">82.3</div>
+          <div class="vs-up rank-change">▲ 2.8</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">12</div>
+        <div class="rank-info">
+          <div class="rank-brand">Gomme</div>
+          <div class="rank-origin">Japan · 1990–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">80.9</div>
+          <div class="vs-up rank-change">▲ 5.3</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">13</div>
+        <div class="rank-info">
+          <div class="rank-brand">Martin Margiela (era)</div>
+          <div class="rank-origin">Belgium · 1988–2008</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">79.6</div>
+          <div class="vs-up rank-change">▲ 1.2</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">14</div>
+        <div class="rank-info">
+          <div class="rank-brand">Vivienne Westwood</div>
+          <div class="rank-origin">UK · 1971–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">78.2</div>
+          <div class="vs-dn rank-change">▼ 0.4</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">15</div>
+        <div class="rank-info">
+          <div class="rank-brand">Takahiromiyashita TheSoloist.</div>
+          <div class="rank-origin">Japan · 2009–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">76.8</div>
+          <div class="vs-up rank-change">▲ 3.6</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">16</div>
+        <div class="rank-info">
+          <div class="rank-brand">Haider Ackermann</div>
+          <div class="rank-origin">Colombia/Belgium · 2002–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">75.4</div>
+          <div class="vs-up rank-change">▲ 1.9</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">17</div>
+        <div class="rank-info">
+          <div class="rank-brand">Koshin Satoh</div>
+          <div class="rank-origin">Japan · 1997–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">74.1</div>
+          <div class="vs-up rank-change">▲ 6.2</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">18</div>
+        <div class="rank-info">
+          <div class="rank-brand">Dior Homme (Hedi era)</div>
+          <div class="rank-origin">France · 2000–2007</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">72.9</div>
+          <div class="vs-dn rank-change">▼ 1.7</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">19</div>
+        <div class="rank-info">
+          <div class="rank-brand">Boris Bidjan Saberi</div>
+          <div class="rank-origin">Germany · 2006–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">71.5</div>
+          <div class="vs-up rank-change">▲ 0.7</div>
+        </div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-num">20</div>
+        <div class="rank-info">
+          <div class="rank-brand">Sacai</div>
+          <div class="rank-origin">Japan · 1999–</div>
+        </div>
+        <div class="rank-right">
+          <div class="rank-score">70.2</div>
+          <div class="vs-up rank-change">▲ 2.3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">CULT·SOCIETY</div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-copy">
+      아카이브 패션의 진짜 가치를 추적합니다<br>
+      © 2026 CULT SOCIETY. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('on'));
+      tab.classList.add('on');
+    });
+  });
+</script>
+
+</body>
+</html>
