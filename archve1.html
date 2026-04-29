@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHVE — 아카이브 패션 시세 & 거래</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --surface: #161410;
+    --border: #2a2520;
+    --accent: #c8a96e;
+    --accent2: #e8d5a3;
+    --red: #c0392b;
+    --green: #27ae60;
+    --text: #f0ebe0;
+    --muted: #7a7060;
+    --card: #131210;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(14,13,11,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 6px;
+    color: var(--accent);
+  }
+
+  .logo span {
+    color: var(--text);
+    opacity: 0.3;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+  }
+
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--accent); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-outline {
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: none;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-fill {
+    background: var(--accent);
+    color: #0e0d0b;
+    padding: 8px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    font-weight: 400;
+    transition: all 0.2s;
+  }
+  .btn-fill:hover { background: var(--accent2); }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 88vh;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-left {
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    display: inline-block;
+    padding: 4px 10px;
+    width: fit-content;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 9vw, 128px);
+    line-height: 0.92;
+    letter-spacing: -1px;
+    margin-top: 32px;
+  }
+
+  .hero-title .line2 {
+    color: var(--accent);
+    display: block;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 380px;
+    margin-top: 24px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .hero-bottom {
+    display: flex;
+    gap: 40px;
+  }
+
+  .stat-item { }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* CHART PANEL */
+  .hero-right {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--surface);
+  }
+
+  .featured-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .item-img {
+    width: 72px;
+    height: 72px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .item-info { flex: 1; }
+  .item-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .item-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 4px 0;
+    color: var(--text);
+  }
+  .item-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .price-badge {
+    text-align: right;
+  }
+  .current-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+  .price-change {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+  }
+  .price-change.down { color: var(--red); }
+
+  /* MINI CHART */
+  .chart-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .chart-container {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+
+  svg.sparkline {
+    width: 100%;
+    height: 80px;
+    overflow: visible;
+  }
+
+  /* PRICE ROW */
+  .price-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .price-cell {
+    background: var(--card);
+    padding: 12px 14px;
+  }
+  .price-cell-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .price-cell-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* LISTINGS */
+  .section {
+    padding: 60px 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 3px;
+  }
+
+  .section-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .listings-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .listing-card {
+    background: var(--card);
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .listing-card:hover { background: var(--surface); }
+
+  .listing-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    position: relative;
+  }
+
+  .listing-trend {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    letter-spacing: 1px;
+  }
+  .trend-up { background: var(--green); color: #fff; }
+  .trend-down { background: var(--red); color: #fff; }
+  .trend-hot {
+    background: var(--accent);
+    color: #0e0d0b;
+    font-weight: 700;
+  }
+
+  .listing-body {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .listing-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  .listing-name {
+    font-size: 12px;
+    font-weight: 500;
+    margin: 4px 0 2px;
+    line-height: 1.4;
+  }
+
+  .listing-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .listing-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .listing-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .listing-vs-retail {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .listing-vs-retail span { display: block; }
+  .vs-up { color: var(--green); }
+  .vs-down { color: var(--red); }
+
+  /* TICKER */
+  .ticker-wrap {
+    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+    padding: 10px 0;
+    background: var(--surface);
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 0 32px;
+    color: var(--muted);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ticker-item .t-name { color: var(--text); }
+  .ticker-item .t-up { color: var(--green); }
+  .ticker-item .t-down { color: var(--red); }
+
+  /* HOW IT WORKS */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 32px;
+  }
+
+  .how-card {
+    background: var(--card);
+    padding: 32px 28px;
+  }
+
+  .how-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .how-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .how-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: var(--muted);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* SEARCH BAR */
+  .search-wrap {
+    display: flex;
+    gap: 0;
+    margin-top: 32px;
+    border: 1px solid var(--border);
+    max-width: 500px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface);
+    border: none;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    outline: none;
+  }
+
+  .search-input::placeholder { color: var(--muted); }
+
+  .search-btn {
+    background: var(--accent);
+    color: #0e0d0b;
+    border: none;
+    padding: 12px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  /* HOVER ANIMATION */
+  .listing-card:hover .listing-img { filter: brightness(1.05); }
+
+  /* FADE IN */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-left > * {
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.25s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.4s; }
+
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 12px 20px;
+    cursor: pointer;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">ARCH<span>V</span>E</div>
+  <ul>
+    <li><a href="#">탐색</a></li>
+    <li><a href="#">시세</a></li>
+    <li><a href="#">거래</a></li>
+    <li><a href="#">커뮤니티</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-outline">로그인</button>
+    <button class="btn-fill">판매하기</button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <div class="ticker-item"><span class="t-name">마르지엘라 타비부츠 '12</span> <span class="t-up">↑ 312,000</span> <span>+8.4%</span></div>
+    <div class="ticker-item"><span class="t-name">꼼데가르송 하트 후드 '09</span> <span class="t-down">↓ 128,000</span> <span>-3.1%</span></div>
+    <div class="ticker-item"><span class="t-name">이세이미야케 플리츠플리즈 '98</span> <span class="t-up">↑ 89,000</span> <span>+5.2%</span></div>
+    <div class="ticker-item"><span class="t-name">준야 와타나베 × 리바이스 '03</span> <span class="t-up">↑ 210,000</span> <span>+12.7%</span></div>
+    <div class="ticker-item"><span class="t-name">RAF SIMONS 오버코트 '01</span> <span class="t-down">↓ 55,000</span> <span>-1.8%</span></div>
+    <div class="ticker-item"><span class="t-name">헬무트랭 빈티지 카고 '99</span> <span class="t-up">↑ 145,000</span> <span>+9.3%</span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="t-name">마르지엘라 타비부츠 '12</span> <span class="t-up">↑ 312,000</span> <span>+8.4%</span></div>
+    <div class="ticker-item"><span class="t-name">꼼데가르송 하트 후드 '09</span> <span class="t-down">↓ 128,000</span> <span>-3.1%</span></div>
+    <div class="ticker-item"><span class="t-name">이세이미야케 플리츠플리즈 '98</span> <span class="t-up">↑ 89,000</span> <span>+5.2%</span></div>
+    <div class="ticker-item"><span class="t-name">준야 와타나베 × 리바이스 '03</span> <span class="t-up">↑ 210,000</span> <span>+12.7%</span></div>
+    <div class="ticker-item"><span class="t-name">RAF SIMONS 오버코트 '01</span> <span class="t-down">↓ 55,000</span> <span>-1.8%</span></div>
+    <div class="ticker-item"><span class="t-name">헬무트랭 빈티지 카고 '99</span> <span class="t-up">↑ 145,000</span> <span>+9.3%</span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="hero-tag">아카이브 패션 × 시세 추적</div>
+      <h1 class="hero-title">
+        패션에도<br>
+        <span class="line2">주식 차트가</span>
+        있다면
+      </h1>
+      <p class="hero-desc">
+        빈티지, 세컨핸드, 아카이브 피스의 거래가를 실시간으로 추적하세요.
+        발매가부터 현재 시세까지 — 당신이 찾던 그 옷의 진짜 가치.
+      </p>
+      <div class="search-wrap">
+        <input class="search-input" type="text" placeholder="브랜드, 아이템명, 시즌 검색...">
+        <button class="search-btn">검색</button>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-fill">지금 탐색하기</button>
+        <button class="btn-outline">시세 보기</button>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <div class="stat-item">
+        <div class="stat-num">4,200+</div>
+        <div class="stat-label">아카이브 피스</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">98개</div>
+        <div class="stat-label">추적 브랜드</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">실시간</div>
+        <div class="stat-label">시세 업데이트</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURED CHART PANEL -->
+  <div class="hero-right">
+    <div class="chart-label">오늘의 주목 아이템</div>
+
+    <div class="featured-item">
+      <div class="item-img">🥿</div>
+      <div class="item-info">
+        <div class="item-brand">Maison Margiela</div>
+        <div class="item-name">타비 앵클 부츠 (블랙)</div>
+        <div class="item-year">2012 S/S — Size 38</div>
+      </div>
+      <div class="price-badge">
+        <div class="current-price">₩ 890,000</div>
+        <div class="price-change">▲ 8.4% 이번주</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="chart-label">거래가 추이 (최근 12개월)</div>
+      <div class="chart-container">
+        <svg class="sparkline" viewBox="0 0 400 80" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#c8a96e" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- area fill -->
+          <path d="M0,65 L33,58 L66,62 L100,50 L133,55 L166,42 L200,45 L233,38 L266,30 L300,35 L333,22 L366,18 L400,10 L400,80 L0,80 Z"
+                fill="url(#chartGrad)"/>
+          <!-- line -->
+          <path d="M0,65 L33,58 L66,62 L100,50 L133,55 L166,42 L200,45 L233,38 L266,30 L300,35 L333,22 L366,18 L400,10"
+                fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- dots at key points -->
+          <circle cx="266" cy="30" r="3" fill="#c8a96e"/>
+          <circle cx="400" cy="10" r="4" fill="#c8a96e"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="price-row">
+      <div class="price-cell">
+        <div class="price-cell-label">발매가</div>
+        <div class="price-cell-val">₩ 520,000</div>
+      </div>
+      <div class="price-cell">
+        <div class="price-cell-label">52주 최저</div>
+        <div class="price-cell-val">₩ 620,000</div>
+      </div>
+      <div class="price-cell">
+        <div class="price-cell-label">52주 최고</div>
+        <div class="price-cell-val">₩ 940,000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LISTINGS -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">지금 거래 중</div>
+      <div class="section-sub">실시간 업데이트 · 총 4,218개</div>
+    </div>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab active">전체</div>
+    <div class="tab">시세 상승</div>
+    <div class="tab">발매가 이하</div>
+    <div class="tab">아카이브</div>
+    <div class="tab">컬래버</div>
+  </div>
+
+  <div class="listings-grid">
+
+    <!-- CARD 1 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        🧥
+        <div class="listing-trend trend-hot">HOT</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Raf Simons</div>
+        <div class="listing-name">Consumed 오버사이즈 코트</div>
+        <div class="listing-meta">2001 F/W · 사이즈 48 · 상태 A</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 3,200,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+184%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        👗
+        <div class="listing-trend trend-up">▲ 9%</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Comme des Garçons</div>
+        <div class="listing-name">하트 패치 후드 집업</div>
+        <div class="listing-meta">2009 S/S · 사이즈 M · 상태 A+</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 580,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+62%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        👖
+        <div class="listing-trend trend-down">▼ 3%</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Helmut Lang</div>
+        <div class="listing-name">빈티지 스키니 카고 팬츠</div>
+        <div class="listing-meta">1999 F/W · 사이즈 29 · 상태 B+</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 420,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+38%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        👟
+        <div class="listing-trend trend-up">▲ 13%</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Junya Watanabe × Levi's</div>
+        <div class="listing-name">데님 재킷 패치워크</div>
+        <div class="listing-meta">2003 S/S · 사이즈 S · 상태 A</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 1,450,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+210%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        🥿
+        <div class="listing-trend trend-up">▲ 8%</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Maison Margiela</div>
+        <div class="listing-name">타비 스플릿토 로퍼</div>
+        <div class="listing-meta">2014 F/W · 사이즈 37 · 상태 A+</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 760,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+46%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 6 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        🧣
+        <div class="listing-trend trend-down">▼ 2%</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Issey Miyake</div>
+        <div class="listing-name">플리츠 플리즈 롱 드레스</div>
+        <div class="listing-meta">1998 S/S · 사이즈 2 · 상태 A</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 390,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-down">-12%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 7 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        🧤
+        <div class="listing-trend trend-hot">HOT</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Yohji Yamamoto</div>
+        <div class="listing-name">아시메트릭 울 블레이저</div>
+        <div class="listing-meta">2005 F/W · 사이즈 3 · 상태 A+</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 2,100,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+155%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 8 -->
+    <div class="listing-card">
+      <div class="listing-img">
+        👕
+        <div class="listing-trend trend-up">▲ 5%</div>
+      </div>
+      <div class="listing-body">
+        <div class="listing-brand">Ann Demeulemeester</div>
+        <div class="listing-name">드레이프 라이더 셔츠</div>
+        <div class="listing-meta">2007 S/S · 사이즈 36 · 상태 B+</div>
+        <div class="listing-price-row">
+          <div class="listing-price">₩ 680,000</div>
+          <div class="listing-vs-retail">
+            <span class="listing-brand">발매가 대비</span>
+            <span class="vs-up">+89%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">어떻게 작동하나요</div>
+    <div class="section-sub">후루츠 + KREAM의 다음 단계</div>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-title">아이템 등록</div>
+      <div class="how-desc">브랜드명, 시즌, 컨디션을 입력하면 ARCHVE의 DB에서 해당 아이템의 과거 거래 데이터를 자동으로 불러옵니다.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-title">시세 확인</div>
+      <div class="how-desc">발매가 대비 현재 시세, 52주 최고·최저, 거래량 추이를 그래프로 확인하고 적정 판매가를 설정하세요.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-title">안전 거래</div>
+      <div class="how-desc">구매자가 수령 확인 후 정산. 모든 거래 내역은 해당 아이템의 시세 데이터로 누적되어 플랫폼 전체의 신뢰도를 높입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ARCHVE</div>
+  <div class="footer-copy">© 2026 ARCHVE. 아카이브 패션의 새로운 기준.</div>
+</footer>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
