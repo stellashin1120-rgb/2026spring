@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CULT SOCIETY</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Noto+Sans+KR:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --paper: #f2ede6;
+  --paper-dark: #e8e1d6;
+  --ink: #1a1714;
+  --ink-light: #6b6259;
+  --red: #c0251a;
+  --border: #c9c0b2;
+  --white: #faf7f2;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  cursor: crosshair;
+}
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+/* ─── NAV ─── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 48px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(242,237,230,0.92);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.logo-dot {
+  color: var(--red);
+  font-size: 22px;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+nav ul {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+nav ul a {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+nav ul a:hover { color: var(--ink); }
+
+.nav-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-ghost {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  cursor: crosshair;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+.btn-solid {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--ink);
+  border: none;
+  padding: 8px 16px;
+  cursor: crosshair;
+  transition: background 0.2s;
+}
+.btn-solid:hover { background: var(--red); }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 80px 48px 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  min-height: 70vh;
+  align-items: end;
+}
+
+.hero-left {
+  padding-right: 60px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(52px, 7vw, 96px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -1px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.hero-body {
+  margin-top: 36px;
+}
+
+.hero-desc {
+  font-size: 13px;
+  line-height: 2;
+  color: var(--ink-light);
+  max-width: 360px;
+  border-left: 2px solid var(--red);
+  padding-left: 16px;
+}
+
+.hero-search {
+  display: flex;
+  margin-top: 32px;
+  border: 1px solid var(--ink);
+  max-width: 400px;
+}
+
+.hero-search input {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  outline: none;
+  letter-spacing: 1px;
+}
+
+.hero-search input::placeholder { color: var(--ink-light); }
+
+.hero-search button {
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  padding: 0 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: crosshair;
+}
+
+/* HERO RIGHT — masonry preview */
+.hero-right {
+  padding-left: 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  align-self: stretch;
+  padding-top: 0;
+}
+
+.hero-card {
+  background: var(--paper-dark);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  cursor: crosshair;
+  transition: transform 0.3s ease;
+}
+.hero-card:hover { transform: translateY(-3px); }
+
+.hero-card:nth-child(1) { grid-row: 1 / 3; }
+
+.hero-card-img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card:nth-child(1) .hero-card-img { aspect-ratio: 2/4; font-size: 80px; }
+.hero-card:nth-child(2) .hero-card-img,
+.hero-card:nth-child(3) .hero-card-img { aspect-ratio: 1/1; font-size: 48px; }
+
+.stamp {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 3px 8px;
+  background: rgba(242,237,230,0.85);
+}
+
+.hero-card-info {
+  padding: 12px 14px;
+}
+
+.hero-card-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+.hero-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-style: italic;
+  margin: 3px 0;
+  color: var(--ink);
+}
+
+.hero-card-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.price-up { color: var(--red); font-size: 9px; }
+.price-down { color: var(--ink-light); font-size: 9px; }
+
+/* ─── MASONRY GRID ─── */
+.section {
+  padding: 64px 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.section-mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+/* FILTER TABS */
+.filters {
+  display: flex;
+  gap: 0;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: crosshair;
+  color: var(--ink-light);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.filter-tab:hover { color: var(--ink); }
+.filter-tab.on {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+/* PINTEREST GRID */
+.pin-grid {
+  columns: 5;
+  column-gap: 12px;
+}
+
+.pin-card {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  cursor: crosshair;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(26,23,20,0.1);
+}
+
+.pin-img {
+  width: 100%;
+  background: var(--paper-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+/* varied heights for masonry feel */
+.pin-card:nth-child(1) .pin-img  { aspect-ratio: 2/3; font-size: 56px; }
+.pin-card:nth-child(2) .pin-img  { aspect-ratio: 3/4; }
+.pin-card:nth-child(3) .pin-img  { aspect-ratio: 1/1; font-size: 40px; }
+.pin-card:nth-child(4) .pin-img  { aspect-ratio: 2/3; font-size: 52px; }
+.pin-card:nth-child(5) .pin-img  { aspect-ratio: 4/5; font-size: 44px; }
+.pin-card:nth-child(6) .pin-img  { aspect-ratio: 1/1; font-size: 38px; }
+.pin-card:nth-child(7) .pin-img  { aspect-ratio: 3/5; font-size: 56px; }
+.pin-card:nth-child(8) .pin-img  { aspect-ratio: 3/4; font-size: 44px; }
+.pin-card:nth-child(9) .pin-img  { aspect-ratio: 2/3; font-size: 48px; }
+.pin-card:nth-child(10) .pin-img { aspect-ratio: 1/1; font-size: 36px; }
+
+.pin-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 3px 7px;
+  text-transform: uppercase;
+}
+.badge-cult { background: var(--ink); color: var(--white); }
+.badge-rise { background: var(--red); color: var(--white); }
+.badge-rare { background: var(--paper); color: var(--ink); border: 1px solid var(--ink); }
+
+.pin-save {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  background: rgba(242,237,230,0.9);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.pin-card:hover .pin-save { opacity: 1; }
+
+.pin-body {
+  padding: 12px 14px 14px;
+}
+
+.pin-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+}
+
+.pin-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-style: italic;
+  margin: 3px 0 2px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.pin-season {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: var(--ink-light);
+  letter-spacing: 1px;
+}
+
+.pin-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.pin-price {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.pin-vs {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  text-align: right;
+  line-height: 1.6;
+}
+.vs-label { color: var(--ink-light); }
+.vs-up { color: var(--red); }
+.vs-dn { color: var(--ink-light); }
+
+/* ─── MARQUEE ─── */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 0;
+  background: var(--ink);
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--paper);
+  padding: 0 28px;
+  border-right: 1px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.7;
+}
+.marquee-item .m-name { color: var(--white); opacity: 1; }
+.marquee-item .m-up { color: #e07060; }
+.marquee-item .m-dn { color: #888; }
+
+/* ─── HOW ─── */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+.how-card {
+  padding: 40px 36px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.how-card:last-child { border-right: none; }
+
+.how-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--border);
+  line-height: 1;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.how-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+
+.how-desc {
+  font-size: 12px;
+  line-height: 2;
+  color: var(--ink-light);
+}
+
+.how-accent {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--ink);
+}
+
+.footer-right {
+  text-align: right;
+}
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  line-height: 2;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-left > * {
+  animation: fadeUp 0.7s ease both;
+}
+.hero-left > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-left > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-left > *:nth-child(3) { animation-delay: 0.3s; }
+
+.pin-card {
+  animation: fadeUp 0.5s ease both;
+}
+.pin-card:nth-child(1)  { animation-delay: 0.05s; }
+.pin-card:nth-child(2)  { animation-delay: 0.1s; }
+.pin-card:nth-child(3)  { animation-delay: 0.15s; }
+.pin-card:nth-child(4)  { animation-delay: 0.2s; }
+.pin-card:nth-child(5)  { animation-delay: 0.25s; }
+.pin-card:nth-child(6)  { animation-delay: 0.3s; }
+.pin-card:nth-child(7)  { animation-delay: 0.35s; }
+.pin-card:nth-child(8)  { animation-delay: 0.4s; }
+.pin-card:nth-child(9)  { animation-delay: 0.45s; }
+.pin-card:nth-child(10) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">CULT<span class="logo-dot">·</span>SOCIETY</div>
+  <ul>
+    <li><a href="#">탐색</a></li>
+    <li><a href="#">시세</a></li>
+    <li><a href="#">거래</a></li>
+    <li><a href="#">아카이브</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-ghost">로그인</button>
+    <button class="btn-solid">판매하기</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div>
+      <div class="hero-eyebrow">Archive Fashion · Price Tracking · Secondhand</div>
+      <h1 class="hero-title">
+        옷에는<br>
+        <em>역사가</em><br>
+        있다
+      </h1>
+      <div class="hero-body">
+        <p class="hero-desc">
+          빈티지, 세컨핸드, 아카이브 피스.<br>
+          발매가부터 지금까지 — 당신이 찾던 그 옷의<br>진짜 가치를 추적합니다.
+        </p>
+        <div class="hero-search">
+          <input type="text" placeholder="브랜드, 시즌, 아이템명...">
+          <button>search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO CARDS -->
+  <div class="hero-right">
+    <div class="hero-card">
+      <div class="hero-card-img">
+        🧥
+        <div class="stamp">cult piece</div>
+      </div>
+      <div class="hero-card-info">
+        <div class="hero-card-brand">Raf Simons</div>
+        <div class="hero-card-name">Consumed Overcoat</div>
+        <div class="hero-card-price">
+          ₩ 3,200,000
+          <span class="price-up">▲ 184%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-img">
+        👗
+        <div class="stamp">rising</div>
+      </div>
+      <div class="hero-card-info">
+        <div class="hero-card-brand">Comme des Garçons</div>
+        <div class="hero-card-name">Heart Patch Hoodie</div>
+        <div class="hero-card-price">
+          ₩ 580,000
+          <span class="price-up">▲ 62%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-img">
+        🥿
+        <div class="stamp">archive</div>
+      </div>
+      <div class="hero-card-info">
+        <div class="hero-card-brand">Maison Margiela</div>
+        <div class="hero-card-name">Tabi Ankle Boot</div>
+        <div class="hero-card-price">
+          ₩ 890,000
+          <span class="price-up">▲ 71%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="m-name">마르지엘라 타비부츠 '12</span><span class="m-up">↑ 8.4%</span></div>
+    <div class="marquee-item"><span class="m-name">꼼데가르송 하트 후드 '09</span><span class="m-dn">↓ 3.1%</span></div>
+    <div class="marquee-item"><span class="m-name">이세이미야케 플리츠플리즈 '98</span><span class="m-up">↑ 5.2%</span></div>
+    <div class="marquee-item"><span class="m-name">준야 와타나베 × 리바이스 '03</span><span class="m-up">↑ 12.7%</span></div>
+    <div class="marquee-item"><span class="m-name">RAF SIMONS Consumed '01</span><span class="m-up">↑ 9.3%</span></div>
+    <div class="marquee-item"><span class="m-name">헬무트랭 빈티지 카고 '99</span><span class="m-dn">↓ 1.8%</span></div>
+    <div class="marquee-item"><span class="m-name">요지야마모토 울 블레이저 '05</span><span class="m-up">↑ 14.2%</span></div>
+    <!-- duplicate -->
+    <div class="marquee-item"><span class="m-name">마르지엘라 타비부츠 '12</span><span class="m-up">↑ 8.4%</span></div>
+    <div class="marquee-item"><span class="m-name">꼼데가르송 하트 후드 '09</span><span class="m-dn">↓ 3.1%</span></div>
+    <div class="marquee-item"><span class="m-name">이세이미야케 플리츠플리즈 '98</span><span class="m-up">↑ 5.2%</span></div>
+    <div class="marquee-item"><span class="m-name">준야 와타나베 × 리바이스 '03</span><span class="m-up">↑ 12.7%</span></div>
+    <div class="marquee-item"><span class="m-name">RAF SIMONS Consumed '01</span><span class="m-up">↑ 9.3%</span></div>
+    <div class="marquee-item"><span class="m-name">헬무트랭 빈티지 카고 '99</span><span class="m-dn">↓ 1.8%</span></div>
+    <div class="marquee-item"><span class="m-name">요지야마모토 울 블레이저 '05</span><span class="m-up">↑ 14.2%</span></div>
+  </div>
+</div>
+
+<!-- PINTEREST GRID -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-title">지금 올라온 피스들</div>
+    <div class="section-mono">실시간 업데이트 · 4,218개</div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-tab on">전체</button>
+    <button class="filter-tab">시세 상승</button>
+    <button class="filter-tab">발매가 이하</button>
+    <button class="filter-tab">아카이브</button>
+    <button class="filter-tab">컬래버</button>
+    <button class="filter-tab">일본 빈티지</button>
+  </div>
+
+  <div class="pin-grid">
+
+    <div class="pin-card">
+      <div class="pin-img">🧥
+        <div class="pin-badge badge-cult">Cult</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Raf Simons</div>
+        <div class="pin-name">Consumed 오버사이즈 코트</div>
+        <div class="pin-season">2001 F/W · Size 48 · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 3,200,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+184%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👗
+        <div class="pin-badge badge-rise">↑ 9%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Comme des Garçons</div>
+        <div class="pin-name">하트 패치 후드 집업</div>
+        <div class="pin-season">2009 S/S · Size M · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 580,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+62%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👖
+        <div class="pin-badge badge-rare">Rare</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Helmut Lang</div>
+        <div class="pin-name">빈티지 스키니 카고</div>
+        <div class="pin-season">1999 F/W · Size 29 · Grade B+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 420,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+38%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👟
+        <div class="pin-badge badge-rise">↑ 13%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Junya Watanabe × Levi's</div>
+        <div class="pin-name">데님 재킷 패치워크</div>
+        <div class="pin-season">2003 S/S · Size S · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 1,450,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+210%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🥿
+        <div class="pin-badge badge-cult">Cult</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Maison Margiela</div>
+        <div class="pin-name">타비 스플릿토 로퍼</div>
+        <div class="pin-season">2014 F/W · Size 37 · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 760,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+46%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🧣
+        <div class="pin-badge badge-rare">Rare</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Issey Miyake</div>
+        <div class="pin-name">플리츠 플리즈 롱 드레스</div>
+        <div class="pin-season">1998 S/S · Size 2 · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 390,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-dn">-12%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🧤
+        <div class="pin-badge badge-cult">Cult</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Yohji Yamamoto</div>
+        <div class="pin-name">아시메트릭 울 블레이저</div>
+        <div class="pin-season">2005 F/W · Size 3 · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 2,100,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+155%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">👕
+        <div class="pin-badge badge-rise">↑ 5%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Ann Demeulemeester</div>
+        <div class="pin-name">드레이프 라이더 셔츠</div>
+        <div class="pin-season">2007 S/S · Size 36 · Grade B+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 680,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+89%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🥾
+        <div class="pin-badge badge-rare">Rare</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Gomme</div>
+        <div class="pin-name">워크 부츠 레더</div>
+        <div class="pin-season">2002 F/W · Size 42 · Grade A</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 340,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+28%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pin-card">
+      <div class="pin-img">🧦
+        <div class="pin-badge badge-rise">↑ 7%</div>
+        <div class="pin-save">♡</div>
+      </div>
+      <div class="pin-body">
+        <div class="pin-brand">Number (N)ine</div>
+        <div class="pin-name">니트 카디건 오버핏</div>
+        <div class="pin-season">2004 F/W · Size 2 · Grade A+</div>
+        <div class="pin-footer">
+          <div class="pin-price">₩ 520,000</div>
+          <div class="pin-vs">
+            <div class="vs-label">발매가 대비</div>
+            <div class="vs-up">+73%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-head">
+    <div class="section-title">어떻게 작동하나요</div>
+    <div class="section-mono">cult society의 방식</div>
+  </div>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <div class="how-title">등록</div>
+      <div class="how-desc">브랜드명, 시즌, 컨디션을 입력하면 CULT SOCIETY DB에서 해당 피스의 과거 거래 데이터를 자동으로 불러옵니다.</div>
+      <div class="how-accent">List your piece →</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <div class="how-title">시세 확인</div>
+      <div class="how-desc">발매가 대비 현재 거래가, 52주 추이를 확인하고 적정 판매가를 설정하세요. 아카이브 피스도 예외 없이.</div>
+      <div class="how-accent">Track value →</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <div class="how-title">거래</div>
+      <div class="how-desc">구매자 수령 확인 후 정산. 모든 거래 내역은 시세 데이터로 누적되어 플랫폼 전체의 신뢰도를 높입니다.</div>
+      <div class="how-accent">Trade safely →</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">CULT·SOCIETY</div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-copy">
+      아카이브 패션의 진짜 가치를 추적합니다<br>
+      © 2026 CULT SOCIETY. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('on'));
+      tab.classList.add('on');
+    });
+  });
+</script>
+
+</body>
+</html>
