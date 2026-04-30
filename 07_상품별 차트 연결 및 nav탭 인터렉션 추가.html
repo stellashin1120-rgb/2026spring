@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CULT SOCIETY</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Cinzel:wght@700;900&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:      #f5f2eb;
+  --black:   #0e0d0c;
+  --accent:  #d4e84a;   /* 시그니처 — 애시드 옐로우그린 */
+  --surface: #edeae2;
+  --border:  rgba(14,13,12,0.12);
+  --mid:     #7a7670;
+  --white:   #faf8f3;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--black);
+  font-family: 'Gowun Batang', serif;
+  font-weight: 400;
+  cursor: crosshair;
+  overflow-x: hidden;
+}
+
+/* grain */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+/* ── 속빈 로고 폰트 ── */
+.logo-outlined {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--black);
+  letter-spacing: 3px;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 2px solid var(--black);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+
+.logo-wrap {
+  padding: 16px 32px;
+  border-right: 2px solid var(--black);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+}
+
+/* 로고: 같은 크기, 속빈, 늘린 느낌 */
+.logo-text {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px var(--black);
+  color: transparent;
+  display: inline-block;
+  line-height: 1;
+}
+
+.logo-dot {
+  font-size: 20px;
+  -webkit-text-stroke: 0;
+  color: var(--black);
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  flex: 1;
+}
+
+nav ul li a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 22px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--mid);
+  text-decoration: none;
+  border-right: 1px solid var(--border);
+  transition: all 0.15s;
+}
+nav ul li a:hover {
+  color: var(--black);
+  background: var(--surface);
+}
+nav ul li a.active {
+  color: var(--black);
+  background: var(--accent);
+  border-bottom: 3px solid var(--black);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  cursor: crosshair;
+  border: 1.5px solid var(--black);
+  background: none;
+  color: var(--black);
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--black); color: var(--bg); }
+.btn-fill { background: var(--accent); color: var(--black); border-color: var(--accent); }
+.btn-fill:hover { background: var(--black); color: var(--accent); border-color: var(--black); }
+
+/* ── MARQUEE ── */
+.marquee-wrap {
+  overflow: hidden;
+  border-bottom: 2px solid var(--black);
+  padding: 8px 0;
+  background: var(--accent);
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.m-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--black);
+  padding: 0 24px;
+  border-right: 1px solid rgba(14,13,12,0.15);
+  display: flex;
+  gap: 8px;
+}
+.m-up { font-weight: 400; }
+.m-dn { opacity: 0.5; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 86vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 2px solid var(--black);
+}
+
+.hero-left {
+  padding: 56px 48px;
+  border-right: 2px solid var(--black);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--bg);
+}
+
+/* 대형 타이포 — WTF 스타일, 같은 크기, 속빈, 세로 늘리기 */
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: clamp(58px, 8vw, 108px);
+  line-height: 1.0;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  -webkit-text-stroke: 3.5px var(--black);
+  color: transparent;
+  display: inline-block;
+}
+
+.hero-title-wrap {
+  border-top: 3px solid var(--black);
+  padding-top: 20px;
+  border-bottom: 3px solid var(--black);
+  padding-bottom: 20px;
+}
+
+.hero-sub {
+  margin-top: 32px;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--mid);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.hero-desc {
+  font-size: 12px;
+  line-height: 2.2;
+  color: var(--mid);
+  max-width: 340px;
+  border-left: 2px solid var(--black);
+  padding-left: 16px;
+}
+
+.hero-slogan {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--black);
+  text-transform: uppercase;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.hero-search {
+  display: flex;
+  margin-top: 16px;
+  border: 1.5px solid var(--black);
+}
+.hero-search input {
+  flex: 1; background: none; border: none;
+  padding: 12px 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--black);
+  letter-spacing: 1px; outline: none;
+}
+.hero-search input::placeholder { color: var(--mid); }
+.hero-search button {
+  background: var(--black); color: var(--bg);
+  border: none; padding: 0 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; cursor: crosshair;
+}
+
+/* HERO RIGHT — 컬러 카드들 */
+.hero-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--black);
+  padding: 2px;
+}
+
+.hero-pin {
+  cursor: crosshair;
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.2s;
+}
+.hero-pin:nth-child(1) { grid-row: span 2; }
+.hero-pin:nth-child(1) { background: var(--black); }
+.hero-pin:nth-child(2) { background: var(--accent); }
+.hero-pin:nth-child(3) { background: var(--surface); }
+.hero-pin:hover { filter: brightness(0.93); }
+
+.hero-pin-img {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  background: rgba(14,13,12,0.04);
+}
+.hero-pin:nth-child(1) .hero-pin-img { aspect-ratio: 2/3; font-size: 80px; }
+.hero-pin:nth-child(2) .hero-pin-img,
+.hero-pin:nth-child(3) .hero-pin-img { aspect-ratio: 4/3; font-size: 48px; }
+
+.pin-stamp {
+  position: absolute; top: 10px; left: 10px;
+  font-family: 'DM Mono', monospace; font-size: 7px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--black); border: 1px solid var(--black);
+  padding: 2px 7px; background: rgba(247,244,238,0.7);
+}
+
+.hero-pin-info {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(14,13,12,0.12);
+}
+.hero-pin:nth-child(1) .hero-pin-info {
+  background: var(--black);
+  border-top-color: rgba(255,255,255,0.1);
+}
+.hero-pin:nth-child(1) .pin-brand { color: rgba(255,255,255,0.45); }
+.hero-pin:nth-child(1) .pin-name { color: var(--white); }
+.hero-pin:nth-child(1) .pin-price { color: var(--white); }
+.pin-brand {
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  letter-spacing: 2px; color: var(--mid); text-transform: uppercase;
+}
+.pin-name { font-size: 12px; margin: 3px 0; color: var(--black); font-weight: 400; }
+.pin-price-row { display: flex; justify-content: space-between; align-items:center; margin-top: 4px; }
+.pin-price { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--black); }
+.pin-pct { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--black); opacity: 0.6; }
+
+/* ── SECTION ── */
+.section { padding: 52px 48px; border-bottom: 2px solid var(--black); }
+
+.section-head {
+  display: flex; align-items: baseline;
+  justify-content: space-between; margin-bottom: 32px;
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--black);
+  display: inline-block;
+}
+
+.section-meta {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; color: var(--mid); text-transform: uppercase;
+}
+
+/* ── FILTER ── */
+.filters {
+  display: flex; gap: 0; margin-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.f-tab {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 10px 16px; color: var(--mid);
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  cursor: crosshair; transition: all 0.15s;
+}
+.f-tab:hover { color: var(--black); }
+.f-tab.on { color: var(--black); border-bottom-color: var(--black); }
+
+/* ── TOP 10 슬라이더 ── */
+.slider-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--black);
+}
+
+.slider-track {
+  display: flex;
+  gap: 2px;
+  background: var(--black);
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  will-change: transform;
+}
+
+.s-card {
+  flex: 0 0 calc(20% - 1.6px);
+  min-width: 0;
+  background: var(--white);
+  cursor: crosshair;
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.2s;
+}
+.s-card:hover { filter: brightness(0.93); }
+
+.s-card-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px;
+  position: relative;
+  overflow: hidden;
+}
+.s-card-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.s-rank {
+  position: absolute; top: 8px; left: 8px;
+  font-family: 'Cinzel', serif; font-weight: 900;
+  font-size: 13px; color: var(--black);
+  background: var(--accent);
+  padding: 2px 8px; line-height: 1.4;
+}
+
+.s-body { padding: 10px 12px 13px; border-top: 1px solid var(--border); }
+.s-brand { font-family: 'DM Mono', monospace; font-size: 7px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; }
+.s-name { font-size: 11px; margin: 3px 0 2px; line-height: 1.4; color: var(--black); }
+.s-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+.s-price { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--black); }
+.s-pct { font-family: 'DM Mono', monospace; font-size: 8px; background: var(--accent); padding: 1px 5px; color: var(--black); }
+
+.slider-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 36px; height: 36px;
+  background: var(--black); color: var(--accent);
+  border: none; cursor: crosshair;
+  font-family: 'DM Mono', monospace; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; transition: background 0.15s;
+}
+.slider-btn:hover { background: var(--accent); color: var(--black); }
+.slider-btn.prev { left: 0; }
+.slider-btn.next { right: 0; }
+
+/* ── 균일 5열 그리드 ── */
+.pin-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  background: var(--black);
+  border: 2px solid var(--black);
+}
+
+.p-card {
+  background: var(--white);
+  cursor: crosshair; position: relative; overflow: hidden;
+  transition: filter 0.2s;
+}
+.p-card:hover { filter: brightness(0.93); }
+.p-card:nth-child(even) { background: var(--surface); }
+
+.p-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: rgba(14,13,12,0.04);
+  display: flex; align-items: center;
+  justify-content: center; position: relative;
+  overflow: hidden;
+  font-size: 44px;
+}
+.p-img img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.p-badge {
+  position: absolute; top: 8px; left: 8px;
+  font-family: 'DM Mono', monospace; font-size: 7px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 2px 7px; border: 1px solid var(--black);
+  background: rgba(247,244,238,0.75); color: var(--black);
+}
+.p-save {
+  position: absolute; top: 8px; right: 8px;
+  font-size: 12px; color: var(--black); opacity: 0;
+  transition: opacity 0.2s;
+}
+.p-card:hover .p-save { opacity: 0.6; }
+
+.p-body { padding: 10px 12px 13px; border-top: 1px solid var(--border); }
+.p-brand { font-family: 'DM Mono', monospace; font-size: 7px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; }
+.p-name { font-size: 11px; margin: 3px 0 2px; line-height: 1.4; color: var(--black); }
+.p-season { font-family: 'DM Mono', monospace; font-size: 7px; color: var(--mid); letter-spacing: 1px; }
+.p-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); }
+.p-price { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--black); }
+.p-vs { font-family: 'DM Mono', monospace; font-size: 7px; text-align: right; line-height: 1.8; }
+.vs-l { color: var(--mid); }
+.vs-u { color: var(--black); }
+.vs-d { color: rgba(17,16,16,0.35); }
+
+/* ── MD PICK ── */
+.md-grid {
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  gap: 2px; background: var(--black);
+  border: 2px solid var(--black);
+}
+
+.md-feat { background: var(--black); }
+.md-feat-img {
+  width: 100%; aspect-ratio: 4/3;
+  background: rgba(14,13,12,0.04);
+  display: flex; align-items: center;
+  justify-content: center; font-size: 80px;
+  border-bottom: 1px solid rgba(14,13,12,0.12);
+}
+.md-feat-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 10px; }
+
+.md-tag {
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  letter-spacing: 3px; color: var(--accent);
+  text-transform: uppercase; border: 1px solid var(--accent);
+  display: inline-block; padding: 2px 8px; width: fit-content;
+}
+
+.md-feat-brand { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+.md-feat-name {
+  font-family: 'Cinzel', serif; font-weight: 900;
+  font-size: 16px; letter-spacing: 1px; text-transform: uppercase;
+  -webkit-text-stroke: 1.5px var(--black); color: transparent;
+  line-height: 1.4; transform: ; display: inline-block;
+}
+.md-feat-desc { font-size: 11px; line-height: 2; color: rgba(17,16,16,0.6); border-left: 2px solid rgba(255,255,255,0.15); padding-left: 14px; }
+.md-feat-foot { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 14px; border-top: 1px solid rgba(14,13,12,0.12); margin-top: auto; }
+.md-price { font-family: 'DM Mono', monospace; font-size: 15px; color: var(--white); }
+.md-retail { font-family: 'DM Mono', monospace; font-size: 8px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+
+.md-picks { background: var(--bg); display: flex; flex-direction: column; }
+.md-pick {
+  display: flex; flex: 1;
+  border-bottom: 1px solid var(--border);
+  cursor: crosshair; transition: filter 0.15s;
+}
+.md-pick:nth-child(1) { background: var(--accent); }
+.md-pick:nth-child(2) { background: var(--bg); }
+.md-pick:nth-child(3) { background: var(--surface); }
+.md-pick:last-child { border-bottom: none; }
+.md-pick:hover { filter: brightness(0.94); }
+
+.md-pick-img { width: 88px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 32px; background: rgba(14,13,12,0.04); border-right: 1px solid var(--border); }
+.md-pick-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 3px; }
+.md-pick-brand { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; }
+.md-pick-name { font-size: 12px; color: var(--black); line-height: 1.4; font-weight: 400; }
+.md-pick-note { font-size: 10px; color: var(--mid); line-height: 1.8; margin-top: 2px; }
+.md-pick-price { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--black); margin-top: auto; }
+
+/* ── BRAND RANKING ── */
+.rank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--black); border: 2px solid var(--black); }
+.rank-col { background: var(--bg); }
+
+.rank-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 13px 20px; border-bottom: 1px solid rgba(17,16,16,0.08);
+  cursor: crosshair; transition: background 0.15s;
+}
+.rank-item:hover { background: var(--surface); }
+.rank-item:last-child { border-bottom: none; }
+.rank-top { background: var(--accent); }
+.rank-top:hover { background: var(--accent); }
+
+.rank-num { font-family: 'Cinzel', serif; font-weight: 900; font-size: 20px; width: 30px; flex-shrink: 0; color: rgba(14,13,12,0.15); }
+.rank-top .rank-num { color: var(--black); }
+.rank-info { flex: 1; }
+.rank-brand { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--black); letter-spacing: 0.5px; }
+.rank-origin { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--mid); margin-top: 2px; }
+.rank-right { text-align: right; }
+.rank-score { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--black); }
+.rank-u { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--black); margin-top: 2px; }
+.rank-d { font-family: 'DM Mono', monospace; font-size: 8px; color: rgba(17,16,16,0.35); margin-top: 2px; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 36px 48px; display: flex;
+  justify-content: space-between; align-items: flex-end;
+  border-top: 2px solid var(--black); background: var(--accent);
+}
+
+.foot-logo {
+  border-top: 3px solid var(--black);
+  border-bottom: 1px solid rgba(17,16,16,0.3);
+  padding: 8px 0;
+}
+.foot-logo-text {
+  font-family: 'Cinzel', serif; font-weight: 900;
+  font-size: 24px; letter-spacing: 6px;
+  -webkit-text-stroke: 2px var(--black); color: transparent;
+  text-transform: uppercase;
+  display: inline-block;
+}
+.foot-copy { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; text-align: right; line-height: 2; }
+
+/* ── DETAIL PAGE OVERLAY ── */
+.detail-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(14,13,12,0.6);
+  z-index: 200;
+  overflow-y: auto;
+  padding: 40px 24px;
+}
+.detail-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+.detail-box {
+  background: var(--bg);
+  width: 100%; max-width: 1080px;
+  border: 2px solid var(--black);
+  position: relative;
+  animation: fadeUp 0.3s ease;
+}
+
+.detail-close {
+  position: absolute; top: 16px; right: 20px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 2px; color: var(--mid);
+  background: none; border: none; cursor: crosshair;
+  text-transform: uppercase;
+}
+.detail-close:hover { color: var(--black); }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.detail-img-col {
+  border-right: 2px solid var(--black);
+}
+
+.detail-main-img {
+  width: 100%; aspect-ratio: 3/4;
+  background: var(--surface);
+  display: flex; align-items: center;
+  justify-content: center; font-size: 100px;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-thumbs {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; background: var(--black);
+  border-top: 2px solid var(--black);
+}
+.detail-thumb {
+  aspect-ratio: 1/1; background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; cursor: crosshair; opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.detail-thumb:hover, .detail-thumb.on { opacity: 1; background: var(--accent); }
+
+.detail-info-col { padding: 32px 36px; display: flex; flex-direction: column; gap: 18px; }
+
+.detail-tag-row { display: flex; gap: 6px; }
+.detail-tag {
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  border: 1px solid var(--black); padding: 2px 9px;
+}
+.detail-tag.accent { background: var(--accent); border-color: var(--accent); }
+
+.detail-brand {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 3px; color: var(--mid); text-transform: uppercase;
+}
+.detail-name {
+  font-family: 'Cinzel', serif; font-weight: 900;
+  font-size: 22px; letter-spacing: 2px; line-height: 1.3;
+  -webkit-text-stroke: 1.5px var(--black); color: transparent;
+}
+.detail-season {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--mid); letter-spacing: 1px;
+}
+
+.detail-price-box {
+  background: var(--black); padding: 18px 20px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.detail-price {
+  font-family: 'Cinzel', serif; font-weight: 900;
+  font-size: 28px; color: var(--white); letter-spacing: 2px;
+}
+.detail-pct {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  background: var(--accent); color: var(--black);
+  padding: 3px 10px;
+}
+
+/* 차트 영역 */
+.detail-chart-section {
+  border-top: 1px solid var(--border); padding-top: 16px;
+}
+.detail-chart-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 2px; color: var(--mid); text-transform: uppercase;
+  margin-bottom: 10px; display: flex; justify-content: space-between;
+}
+.chart-period-btns { display: flex; gap: 4px; }
+.chart-period-btn {
+  font-family: 'DM Mono', monospace; font-size: 8px;
+  letter-spacing: 1px; padding: 2px 8px;
+  border: 1px solid var(--border); background: none;
+  cursor: crosshair; color: var(--mid); transition: all 0.15s;
+}
+.chart-period-btn.on,
+.chart-period-btn:hover { background: var(--black); color: var(--accent); border-color: var(--black); }
+
+.chart-wrap { position: relative; height: 160px; }
+
+/* 거래 이력 */
+.detail-history { border-top: 1px solid var(--border); padding-top: 14px; }
+.history-row {
+  display: grid; grid-template-columns: 90px 1fr 110px 70px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-family: 'DM Mono', monospace; font-size: 9px;
+}
+.history-row:last-child { border-bottom: none; }
+.h-date { color: var(--mid); }
+.h-price { font-weight: 400; }
+.h-grade { color: var(--mid); }
+.h-diff-up { color: var(--black); background: var(--accent); padding: 0 6px; text-align: center; }
+.h-diff-dn { color: var(--mid); }
+
+/* 구매 버튼 */
+.detail-buy-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: auto; }
+.detail-btn {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 14px; border: none; cursor: crosshair;
+  transition: all 0.15s;
+}
+.detail-btn-buy { background: var(--black); color: var(--accent); }
+.detail-btn-buy:hover { background: var(--accent); color: var(--black); }
+.detail-btn-bid { background: var(--surface); color: var(--black); border: 1.5px solid var(--black); }
+.detail-btn-bid:hover { background: var(--black); color: var(--white); }
+
+/* FADE IN */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-left > * { animation: fadeUp 0.55s ease both; }
+.hero-left > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-left > *:nth-child(2) { animation-delay: 0.15s; }
+.hero-left > *:nth-child(3) { animation-delay: 0.28s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-wrap">
+    <span class="logo-text">CULT</span>
+    <span class="logo-dot">·</span>
+    <span class="logo-text">SOCIETY</span>
+  </div>
+  <ul>
+    <li><a href="#" class="nav-tab active" data-target="sec-explore">탐색</a></li>
+    <li><a href="#" class="nav-tab" data-target="sec-price">시세</a></li>
+    <li><a href="#" class="nav-tab" data-target="sec-trade">거래</a></li>
+    <li><a href="#" class="nav-tab" data-target="sec-archive">아카이브</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn">로그인</button>
+    <button class="btn btn-fill">판매하기</button>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="m-item"><span>마르지엘라 타비부츠 '12</span><span class="m-up">↑ 8.4%</span></div>
+    <div class="m-item"><span>꼼데가르송 하트 후드 '09</span><span class="m-dn">↓ 3.1%</span></div>
+    <div class="m-item"><span>이세이미야케 플리츠플리즈 '98</span><span class="m-up">↑ 5.2%</span></div>
+    <div class="m-item"><span>준야 와타나베 × 리바이스 '03</span><span class="m-up">↑ 12.7%</span></div>
+    <div class="m-item"><span>RAF SIMONS Consumed '01</span><span class="m-up">↑ 9.3%</span></div>
+    <div class="m-item"><span>헬무트랭 빈티지 카고 '99</span><span class="m-dn">↓ 1.8%</span></div>
+    <div class="m-item"><span>요지야마모토 울 블레이저 '05</span><span class="m-up">↑ 14.2%</span></div>
+    <div class="m-item"><span>마르지엘라 타비부츠 '12</span><span class="m-up">↑ 8.4%</span></div>
+    <div class="m-item"><span>꼼데가르송 하트 후드 '09</span><span class="m-dn">↓ 3.1%</span></div>
+    <div class="m-item"><span>이세이미야케 플리츠플리즈 '98</span><span class="m-up">↑ 5.2%</span></div>
+    <div class="m-item"><span>준야 와타나베 × 리바이스 '03</span><span class="m-up">↑ 12.7%</span></div>
+    <div class="m-item"><span>RAF SIMONS Consumed '01</span><span class="m-up">↑ 9.3%</span></div>
+    <div class="m-item"><span>헬무트랭 빈티지 카고 '99</span><span class="m-dn">↓ 1.8%</span></div>
+    <div class="m-item"><span>요지야마모토 울 블레이저 '05</span><span class="m-up">↑ 14.2%</span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="sec-explore">
+  <div class="hero-left">
+    <div class="hero-title-wrap">
+      <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; color:var(--mid); text-transform:uppercase; margin-bottom:20px;">Archive · Secondhand · Price Tracking</div>
+      <div class="hero-title">CULT<br>SOCIETY</div>
+      <!-- 캐치카피 -->
+      <div style="margin-top:28px; padding-top:24px; border-top:2px solid var(--black);">
+        <div style="font-family:'Gowun Batang',serif; font-size:clamp(18px,2.2vw,28px); line-height:1.6; color:var(--black); font-weight:700; letter-spacing:-0.3px;">
+          죽지 않는 옷들의 시장.
+        </div>
+        <div style="font-family:'Gowun Batang',serif; font-size:13px; line-height:2; color:var(--mid); margin-top:10px; max-width:380px;">
+          유행은 끝나도 가치는 남는다.<br>아카이브 피스의 발매가부터 지금 시세까지 —<br>아는 사람만 아는 것들을 여기서 거래하세요.
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="hero-slogan">WE DON'T FOLLOW. WE ARCHIVE.</div>
+      <div class="hero-search">
+        <input type="text" placeholder="브랜드, 시즌, 아이템명...">
+        <button>SEARCH</button>
+      </div>
+      <!-- 스탯 3개 -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1.5px solid var(--black); margin-top:20px;">
+        <div style="padding:14px 16px; border-right:1px solid var(--black);">
+          <div style="font-family:'Cinzel',serif; font-weight:900; font-size:22px; color:var(--black);">4,218</div>
+          <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; margin-top:3px;">아카이브 피스</div>
+        </div>
+        <div style="padding:14px 16px; border-right:1px solid var(--black);">
+          <div style="font-family:'Cinzel',serif; font-weight:900; font-size:22px; color:var(--black);">98</div>
+          <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; margin-top:3px;">추적 브랜드</div>
+        </div>
+        <div style="padding:14px 16px; background:var(--accent);">
+          <div style="font-family:'Cinzel',serif; font-weight:900; font-size:22px; color:var(--black);">실시간</div>
+          <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--black); letter-spacing:1px; margin-top:3px;">시세 업데이트</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-pin">
+      <div class="hero-pin-img">🧥<div class="pin-stamp">CULT PIECE</div></div>
+      <div class="hero-pin-info">
+        <div class="pin-brand">Yohji Yamamoto</div>
+        <div class="pin-name">Packable 자켓</div>
+        <div class="pin-price-row">
+          <span class="pin-price">₩ 220,000</span>
+          <span class="pin-pct" style="background:var(--accent); padding:2px 6px; font-size:8px;">↓9%</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-pin">
+      <div class="hero-pin-img">👞<div class="pin-stamp">RISING</div></div>
+      <div class="hero-pin-info">
+        <div class="pin-brand">Raf Simons</div>
+        <div class="pin-name">20ss 더비 43사이즈</div>
+        <div class="pin-price-row">
+          <span class="pin-price">₩ 750,000</span>
+          <span class="pin-pct" style="background:var(--accent); padding:2px 6px; font-size:8px;">+62%</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-pin">
+      <div class="hero-pin-img">👜<div class="pin-stamp">ARCHIVE</div></div>
+      <div class="hero-pin-info">
+        <div class="pin-brand">Balenciaga</div>
+        <div class="pin-name">시티 모터백 퍼플</div>
+        <div class="pin-price-row">
+          <span class="pin-price">₩ 1,450,000</span>
+          <span class="pin-pct" style="background:var(--accent); padding:2px 6px; font-size:8px;">+112%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP 10 + PIN GRID -->
+<section class="section" id="sec-grid">
+  <!-- TOP 10 슬라이더 -->
+  <div class="section-head">
+    <div>
+      <div class="section-title">TOP 10</div>
+      <div class="section-meta" style="margin-top:4px;">이번 주 인기 상품 · 좌우로 넘기세요</div>
+    </div>
+    <div style="display:flex; gap:2px;">
+      <button class="slider-btn prev" onclick="slide(-1)" style="position:static; transform:none;">←</button>
+      <button class="slider-btn next" onclick="slide(1)" style="position:static; transform:none;">→</button>
+    </div>
+  </div>
+
+  <div class="slider-wrap" style="margin-bottom:48px;">
+    <div class="slider-track" id="sliderTrack">
+      <div class="s-card"><div class="s-card-img">🧥<div class="s-rank">01</div></div><div class="s-body"><div class="s-brand">Yohji Yamamoto</div><div class="s-name">Packable 자켓</div><div class="s-footer"><span class="s-price">₩ 220,000</span><span class="s-pct">↓9%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">👕<div class="s-rank">02</div></div><div class="s-body"><div class="s-brand">Comme des Garçons</div><div class="s-name">로브 드 샹브르 그래픽 티</div><div class="s-footer"><span class="s-price">₩ 130,000</span><span class="s-pct">+21%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">🧥<div class="s-rank">03</div></div><div class="s-body"><div class="s-brand">Prada</div><div class="s-name">2011s sports 나일론 자켓</div><div class="s-footer"><span class="s-price">₩ 380,000</span><span class="s-pct">+44%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">👟<div class="s-rank">04</div></div><div class="s-body"><div class="s-brand">Rick Owens</div><div class="s-name">지오바스켓 검정 박스 끈</div><div class="s-footer"><span class="s-price">₩ 450,000</span><span class="s-pct">↓12%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">👞<div class="s-rank">05</div></div><div class="s-body"><div class="s-brand">Raf Simons</div><div class="s-name">20ss 더비 43사이즈</div><div class="s-footer"><span class="s-price">₩ 750,000</span><span class="s-pct">+62%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">👕<div class="s-rank">06</div></div><div class="s-body"><div class="s-brand">Maison Margiela</div><div class="s-name">마르지엘라 바디티</div><div class="s-footer"><span class="s-price">₩ 160,000</span><span class="s-pct">+18%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">🧥<div class="s-rank">07</div></div><div class="s-body"><div class="s-brand">Comme des Garçons Homme</div><div class="s-name">다나카 옴므 AD 1995</div><div class="s-footer"><span class="s-price">₩ 320,000</span><span class="s-pct">+89%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">👜<div class="s-rank">08</div></div><div class="s-body"><div class="s-brand">Balenciaga</div><div class="s-name">시티 모터백 퍼플</div><div class="s-footer"><span class="s-price">₩ 1,450,000</span><span class="s-pct">+112%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">🧥<div class="s-rank">09</div></div><div class="s-body"><div class="s-brand">Incarnation</div><div class="s-name">인카네이션 하이넥 자켓</div><div class="s-footer"><span class="s-price">₩ 1,800,000</span><span class="s-pct">+95%</span></div></div></div>
+      <div class="s-card"><div class="s-card-img">🧥<div class="s-rank">10</div></div><div class="s-body"><div class="s-brand">C.P. Company</div><div class="s-name">고글후드 앙렌즈 바람막이</div><div class="s-footer"><span class="s-price">₩ 300,000</span><span class="s-pct">+28%</span></div></div></div>
+    </div>
+  </div>
+
+  <!-- 지금 거래 중 그리드 -->
+  <div class="section-head">
+    <div class="section-title">지금 거래 중</div>
+    <div class="section-meta">실시간 · 4,218개</div>
+  </div>
+  <div class="filters">
+    <button class="f-tab on">전체</button>
+    <button class="f-tab">시세 상승</button>
+    <button class="f-tab">발매가 이하</button>
+    <button class="f-tab">아카이브</button>
+    <button class="f-tab">컬래버</button>
+    <button class="f-tab">일본 빈티지</button>
+  </div>
+  <div class="pin-grid">
+    <div class="p-card"><div class="p-img">🧥<div class="p-badge">CULT</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Yohji Yamamoto</div><div class="p-name">Packable 자켓</div><div class="p-season">OS · 중고</div><div class="p-footer"><span class="p-price">₩ 220,000</span><div class="p-vs"><div class="vs-l">정가 대비</div><div class="vs-u">↓9%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">👕<div class="p-badge">RARE</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Comme des Garçons</div><div class="p-name">로브 드 샹브르 그래픽 티</div><div class="p-season">M · 중고</div><div class="p-footer"><span class="p-price">₩ 130,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+21%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">🧥<div class="p-badge">RARE</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Prada</div><div class="p-name">2011s sports 나일론 자켓</div><div class="p-season">L · 중고</div><div class="p-footer"><span class="p-price">₩ 380,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+44%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">👟<div class="p-badge">CULT</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Rick Owens</div><div class="p-name">지오바스켓 검정 박스 끈</div><div class="p-season">OS · 중고</div><div class="p-footer"><span class="p-price">₩ 450,000</span><div class="p-vs"><div class="vs-l">정가 대비</div><div class="vs-d">↓12%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">👞<div class="p-badge">CULT</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Raf Simons</div><div class="p-name">20ss 더비 43사이즈</div><div class="p-season">280 · 중고</div><div class="p-footer"><span class="p-price">₩ 750,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+62%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">👕<div class="p-badge">RARE</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Maison Margiela</div><div class="p-name">마르지엘라 바디티</div><div class="p-season">M · 중고</div><div class="p-footer"><span class="p-price">₩ 160,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+18%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">🧥<div class="p-badge">CULT</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Comme des Garçons Homme</div><div class="p-name">다나카 옴므 AD 1995</div><div class="p-season">M · 중고</div><div class="p-footer"><span class="p-price">₩ 320,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+89%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">👜<div class="p-badge">↑ 19%</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Balenciaga</div><div class="p-name">시티 모터백 퍼플</div><div class="p-season">OS · 중고</div><div class="p-footer"><span class="p-price">₩ 1,450,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+112%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">🧥<div class="p-badge">RARE</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">Incarnation</div><div class="p-name">인카네이션 하이넥 자켓</div><div class="p-season">M · 중고</div><div class="p-footer"><span class="p-price">₩ 1,800,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+95%</div></div></div></div></div>
+    <div class="p-card"><div class="p-img">🧥<div class="p-badge">↑ 35%</div><div class="p-save">♡</div></div><div class="p-body"><div class="p-brand">C.P. Company</div><div class="p-name">고글후드 앙렌즈 바람막이</div><div class="p-season">M · 중고</div><div class="p-footer"><span class="p-price">₩ 300,000</span><div class="p-vs"><div class="vs-l">발매가 대비</div><div class="vs-u">+28%</div></div></div></div></div>
+  </div>
+</section>
+
+<!-- MD PICK -->
+<section class="section" id="sec-price">
+  <div class="section-head">
+    <div class="section-title">MD'S PICK</div>
+    <div class="section-meta" style="border:1.5px solid var(--black); padding:4px 12px;">2026 W.18</div>
+  </div>
+  <div class="md-grid">
+    <div class="md-feat">
+      <div class="md-feat-img">🧥</div>
+      <div class="md-feat-body">
+        <div class="md-tag">MD NOTE</div>
+        <div class="md-feat-brand">Raf Simons</div>
+        <div class="md-feat-name">Consumed Period Overcoat — 2001 F/W</div>
+        <div class="md-feat-desc">라프 시몬스가 소비사회에 던진 선언. 20년이 지난 지금, 이 코트는 그 시대를 증언하는 가장 명확한 오브제다.</div>
+        <div class="md-feat-foot">
+          <div><div class="md-price">₩ 3,200,000</div><div class="md-retail">발매가 ₩ 1,120,000 · +184%</div></div>
+          <button class="btn btn-fill" style="font-size:8px; padding:9px 16px;">거래 보기</button>
+        </div>
+      </div>
+    </div>
+    <div class="md-picks">
+      <div class="md-pick"><div class="md-pick-img">👗</div><div class="md-pick-body"><div class="md-tag">MD NOTE</div><div class="md-pick-brand">Comme des Garçons</div><div class="md-pick-name">하트 패치 후드 — 2009 S/S</div><div class="md-pick-note">CDG PLAY가 아직 순수했던 시절의 유머.</div><div class="md-pick-price">₩ 580,000 <span style="opacity:.45; font-size:9px;">+62%</span></div></div></div>
+      <div class="md-pick"><div class="md-pick-img">🥿</div><div class="md-pick-body"><div class="md-tag">MD NOTE</div><div class="md-pick-brand">Maison Margiela</div><div class="md-pick-name">타비 앵클 부츠 — 2012 S/S</div><div class="md-pick-note">익명성 뒤에서 남긴 가장 강렬한 서명.</div><div class="md-pick-price">₩ 890,000 <span style="opacity:.45; font-size:9px;">+71%</span></div></div></div>
+      <div class="md-pick"><div class="md-pick-img">👟</div><div class="md-pick-body"><div class="md-tag">MD NOTE</div><div class="md-pick-brand">Junya Watanabe × Levi's</div><div class="md-pick-name">데님 패치워크 재킷 — 2003 S/S</div><div class="md-pick-note">워크웨어를 해체하고 재봉한 컬래버의 정수.</div><div class="md-pick-price">₩ 1,450,000 <span style="opacity:.45; font-size:9px;">+210%</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRAND RANKING -->
+<section class="section" id="sec-archive">
+  <div class="section-head">
+    <div class="section-title">BRAND RANKING</div>
+    <div class="section-meta">거래량 · 시세 · 희소성 종합</div>
+  </div>
+  <div class="rank-grid">
+    <div class="rank-col">
+      <div class="rank-item rank-top"><div class="rank-num">01</div><div class="rank-info"><div class="rank-brand">Maison Margiela</div><div class="rank-origin">Belgium · 1988–</div></div><div class="rank-right"><div class="rank-score">98.4</div><div class="rank-u">▲ 2.1</div></div></div>
+      <div class="rank-item rank-top"><div class="rank-num">02</div><div class="rank-info"><div class="rank-brand">Raf Simons</div><div class="rank-origin">Belgium · 1995–</div></div><div class="rank-right"><div class="rank-score">96.7</div><div class="rank-u">▲ 0.8</div></div></div>
+      <div class="rank-item rank-top"><div class="rank-num">03</div><div class="rank-info"><div class="rank-brand">Comme des Garçons</div><div class="rank-origin">Japan · 1969–</div></div><div class="rank-right"><div class="rank-score">95.2</div><div class="rank-d">▼ 0.3</div></div></div>
+      <div class="rank-item"><div class="rank-num">04</div><div class="rank-info"><div class="rank-brand">Yohji Yamamoto</div><div class="rank-origin">Japan · 1972–</div></div><div class="rank-right"><div class="rank-score">93.8</div><div class="rank-u">▲ 1.4</div></div></div>
+      <div class="rank-item"><div class="rank-num">05</div><div class="rank-info"><div class="rank-brand">Helmut Lang</div><div class="rank-origin">Austria · 1986–2005</div></div><div class="rank-right"><div class="rank-score">91.5</div><div class="rank-u">▲ 3.2</div></div></div>
+      <div class="rank-item"><div class="rank-num">06</div><div class="rank-info"><div class="rank-brand">Ann Demeulemeester</div><div class="rank-origin">Belgium · 1985–</div></div><div class="rank-right"><div class="rank-score">89.3</div><div class="rank-u">▲ 0.5</div></div></div>
+      <div class="rank-item"><div class="rank-num">07</div><div class="rank-info"><div class="rank-brand">Junya Watanabe</div><div class="rank-origin">Japan · 1992–</div></div><div class="rank-right"><div class="rank-score">87.9</div><div class="rank-d">▼ 1.1</div></div></div>
+      <div class="rank-item"><div class="rank-num">08</div><div class="rank-info"><div class="rank-brand">Issey Miyake</div><div class="rank-origin">Japan · 1970–</div></div><div class="rank-right"><div class="rank-score">86.4</div><div class="rank-u">▲ 0.9</div></div></div>
+      <div class="rank-item"><div class="rank-num">09</div><div class="rank-info"><div class="rank-brand">Number (N)ine</div><div class="rank-origin">Japan · 1996–2009</div></div><div class="rank-right"><div class="rank-score">85.1</div><div class="rank-u">▲ 4.7</div></div></div>
+      <div class="rank-item"><div class="rank-num">10</div><div class="rank-info"><div class="rank-brand">Dries Van Noten</div><div class="rank-origin">Belgium · 1986–</div></div><div class="rank-right"><div class="rank-score">83.7</div><div class="rank-d">▼ 0.6</div></div></div>
+    </div>
+    <div class="rank-col">
+      <div class="rank-item"><div class="rank-num">11</div><div class="rank-info"><div class="rank-brand">Undercover</div><div class="rank-origin">Japan · 1990–</div></div><div class="rank-right"><div class="rank-score">82.3</div><div class="rank-u">▲ 2.8</div></div></div>
+      <div class="rank-item"><div class="rank-num">12</div><div class="rank-info"><div class="rank-brand">Gomme</div><div class="rank-origin">Japan · 1990–</div></div><div class="rank-right"><div class="rank-score">80.9</div><div class="rank-u">▲ 5.3</div></div></div>
+      <div class="rank-item"><div class="rank-num">13</div><div class="rank-info"><div class="rank-brand">Martin Margiela era</div><div class="rank-origin">Belgium · 1988–2008</div></div><div class="rank-right"><div class="rank-score">79.6</div><div class="rank-u">▲ 1.2</div></div></div>
+      <div class="rank-item"><div class="rank-num">14</div><div class="rank-info"><div class="rank-brand">Vivienne Westwood</div><div class="rank-origin">UK · 1971–</div></div><div class="rank-right"><div class="rank-score">78.2</div><div class="rank-d">▼ 0.4</div></div></div>
+      <div class="rank-item"><div class="rank-num">15</div><div class="rank-info"><div class="rank-brand">TheSoloist.</div><div class="rank-origin">Japan · 2009–</div></div><div class="rank-right"><div class="rank-score">76.8</div><div class="rank-u">▲ 3.6</div></div></div>
+      <div class="rank-item"><div class="rank-num">16</div><div class="rank-info"><div class="rank-brand">Haider Ackermann</div><div class="rank-origin">Colombia/Belgium · 2002–</div></div><div class="rank-right"><div class="rank-score">75.4</div><div class="rank-u">▲ 1.9</div></div></div>
+      <div class="rank-item"><div class="rank-num">17</div><div class="rank-info"><div class="rank-brand">Koshin Satoh</div><div class="rank-origin">Japan · 1997–</div></div><div class="rank-right"><div class="rank-score">74.1</div><div class="rank-u">▲ 6.2</div></div></div>
+      <div class="rank-item"><div class="rank-num">18</div><div class="rank-info"><div class="rank-brand">Dior Homme (Hedi era)</div><div class="rank-origin">France · 2000–2007</div></div><div class="rank-right"><div class="rank-score">72.9</div><div class="rank-d">▼ 1.7</div></div></div>
+      <div class="rank-item"><div class="rank-num">19</div><div class="rank-info"><div class="rank-brand">Boris Bidjan Saberi</div><div class="rank-origin">Germany · 2006–</div></div><div class="rank-right"><div class="rank-score">71.5</div><div class="rank-u">▲ 0.7</div></div></div>
+      <div class="rank-item"><div class="rank-num">20</div><div class="rank-info"><div class="rank-brand">Sacai</div><div class="rank-origin">Japan · 1999–</div></div><div class="rank-right"><div class="rank-score">70.2</div><div class="rank-u">▲ 2.3</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ITEM DETAIL + 입찰 시스템 -->
+<section class="section" id="sec-trade" style="background: var(--surface);">
+  <div class="section-head">
+    <div class="section-title">MAKE AN OFFER</div>
+    <div class="section-meta">입찰 / 호가 시스템</div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--black); border:2px solid var(--black);">
+
+    <!-- 왼쪽: 아이템 정보 -->
+    <div style="background:var(--bg); padding:32px;">
+      <div style="display:flex; gap:20px; align-items:flex-start; padding-bottom:24px; border-bottom:1px solid var(--border);">
+        <div style="width:100px; height:130px; background:var(--surface); display:flex; align-items:center; justify-content:center; font-size:48px; flex-shrink:0; border:1.5px solid var(--black);">🧥</div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2px; color:var(--mid); text-transform:uppercase;">Raf Simons</div>
+          <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:14px; color:var(--black); margin:6px 0; line-height:1.4; display:inline-block;">CONSUMED<br>OVERCOAT</div>
+          <div style="font-family:'DM Mono',monospace; font-size:9px; color:var(--mid); margin-top:8px;">2001 F/W · Size 48 · Grade A</div>
+          <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;">
+            <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 8px;">CULT PIECE</span>
+            <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 8px;">ARCHIVE</span>
+            <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 8px; background:var(--accent);">안전결제</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 시세 요약 -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--black); border:1.5px solid var(--black); margin-top:20px;">
+        <div style="background:var(--bg); padding:12px 14px;">
+          <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px;">발매가</div>
+          <div style="font-family:'DM Mono',monospace; font-size:14px; margin-top:4px;">₩1,120,000</div>
+        </div>
+        <div style="background:var(--surface); padding:12px 14px;">
+          <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px;">현재 판매가</div>
+          <div style="font-family:'DM Mono',monospace; font-size:14px; margin-top:4px;">₩3,200,000</div>
+        </div>
+        <div style="background:var(--bg); padding:12px 14px;">
+          <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px;">최근 거래가</div>
+          <div style="font-family:'DM Mono',monospace; font-size:14px; margin-top:4px;">₩2,950,000</div>
+        </div>
+      </div>
+
+      <!-- 미니 거래 히스토리 -->
+      <div style="margin-top:20px;">
+        <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--mid); text-transform:uppercase; margin-bottom:10px;">최근 거래 이력</div>
+        <div style="display:flex; flex-direction:column; gap:0; border:1.5px solid var(--black);">
+          <div style="display:flex; justify-content:space-between; padding:8px 14px; border-bottom:1px solid var(--border); font-family:'DM Mono',monospace; font-size:10px;"><span style="color:var(--mid);">2026.04.12</span><span>₩ 2,950,000</span><span style="color:var(--mid);">Grade A</span></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 14px; border-bottom:1px solid var(--border); font-family:'DM Mono',monospace; font-size:10px;"><span style="color:var(--mid);">2026.02.28</span><span>₩ 3,100,000</span><span style="color:var(--mid);">Grade A+</span></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 14px; font-family:'DM Mono',monospace; font-size:10px;"><span style="color:var(--mid);">2025.11.05</span><span>₩ 2,700,000</span><span style="color:var(--mid);">Grade A</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오른쪽: 입찰 시스템 -->
+    <div style="background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:20px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--mid); text-transform:uppercase; margin-bottom:16px;">구매 방식 선택</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--black); border:1.5px solid var(--black);" id="buyMode">
+          <button onclick="setMode('buy')" id="mode-buy" style="padding:12px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; border:none; cursor:crosshair; background:var(--black); color:var(--bg); transition:all 0.15s;">즉시 구매</button>
+          <button onclick="setMode('bid')" id="mode-bid" style="padding:12px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; border:none; cursor:crosshair; background:var(--bg); color:var(--black); transition:all 0.15s;">입찰 제시</button>
+        </div>
+      </div>
+
+      <!-- 즉시 구매 패널 -->
+      <div id="panel-buy">
+        <div style="background:var(--accent); border:1.5px solid var(--black); padding:20px; margin-bottom:16px;">
+          <div style="font-family:'DM Mono',monospace; font-size:9px; color:var(--mid); letter-spacing:1px;">즉시 구매가</div>
+          <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:28px; color:var(--black); margin-top:6px; display:inline-block;">₩3,200,000</div>
+        </div>
+        <button style="width:100%; padding:14px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; background:var(--black); color:var(--bg); border:none; cursor:crosshair;">지금 바로 구매하기</button>
+        <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); text-align:center; margin-top:10px;">구매 확정 후 3영업일 내 발송 · 안전결제 보장</div>
+      </div>
+
+      <!-- 입찰 패널 -->
+      <div id="panel-bid" style="display:none;">
+        <div style="font-family:'DM Mono',monospace; font-size:9px; color:var(--mid); letter-spacing:1px; margin-bottom:10px;">현재 최고 입찰가: <strong style="color:var(--black);">₩ 2,800,000</strong></div>
+        <div style="border:1.5px solid var(--black); display:flex; margin-bottom:14px;">
+          <span style="font-family:'DM Mono',monospace; font-size:12px; padding:12px 14px; border-right:1px solid var(--black); color:var(--mid);">₩</span>
+          <input id="bidInput" type="number" placeholder="희망 구매가 입력" style="flex:1; padding:12px 14px; font-family:'DM Mono',monospace; font-size:12px; border:none; background:none; outline:none; color:var(--black);">
+        </div>
+        <!-- 퀵 버튼 -->
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:14px;">
+          <button onclick="setBid(2800000)" style="padding:8px; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1px; border:1px solid var(--black); background:none; cursor:crosshair;">280만</button>
+          <button onclick="setBid(2900000)" style="padding:8px; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1px; border:1px solid var(--black); background:none; cursor:crosshair;">290만</button>
+          <button onclick="setBid(3000000)" style="padding:8px; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1px; border:1px solid var(--black); background:none; cursor:crosshair;">300만</button>
+        </div>
+        <button style="width:100%; padding:14px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; background:var(--black); color:var(--bg); border:none; cursor:crosshair;">입찰 제시하기</button>
+        <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); text-align:center; margin-top:10px;">판매자가 수락하면 자동 결제 · 24시간 유효</div>
+      </div>
+
+      <!-- 현재 입찰 현황 -->
+      <div style="border-top:1px solid var(--border); padding-top:20px;">
+        <div style="font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--mid); text-transform:uppercase; margin-bottom:12px;">현재 입찰 현황</div>
+        <div style="display:flex; flex-direction:column; gap:0; border:1.5px solid var(--black);">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border); background:var(--surface);">
+            <span style="font-family:'DM Mono',monospace; font-size:9px;">@archiver_k</span>
+            <span style="font-family:'DM Mono',monospace; font-size:11px;">₩ 2,800,000</span>
+            <span style="font-family:'DM Mono',monospace; font-size:7px; border:1px solid var(--black); padding:2px 6px;">최고가</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 14px; border-bottom:1px solid var(--border);">
+            <span style="font-family:'DM Mono',monospace; font-size:9px; color:var(--mid);">@void___.j</span>
+            <span style="font-family:'DM Mono',monospace; font-size:11px;">₩ 2,600,000</span>
+            <span style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid);">3시간 전</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 14px;">
+            <span style="font-family:'DM Mono',monospace; font-size:9px; color:var(--mid);">@cult.seeker</span>
+            <span style="font-family:'DM Mono',monospace; font-size:11px;">₩ 2,400,000</span>
+            <span style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid);">6시간 전</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 유저 옷장 프로필 -->
+<section class="section" style="background:var(--bg);">
+  <div class="section-head">
+    <div class="section-title">MY CLOSET</div>
+    <div class="section-meta">유저 옷장 프로필</div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:260px 1fr; gap:2px; background:var(--black); border:2px solid var(--black);">
+
+    <!-- 왼쪽: 프로필 카드 -->
+    <div style="background:var(--bg); display:flex; flex-direction:column;">
+      <!-- 프로필 상단 -->
+      <div style="padding:28px 24px; border-bottom:1px solid var(--border); text-align:center;">
+        <div style="width:72px; height:72px; background:var(--accent); border:2px solid var(--black); display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 12px;">👤</div>
+        <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:13px; color:var(--black); display:inline-block; letter-spacing:2px;">@archiver_k</div>
+        <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); margin-top:6px; letter-spacing:1px;">Seoul, KR · 컬티 2년차</div>
+        <!-- 신뢰 뱃지 -->
+        <div style="display:flex; gap:6px; justify-content:center; margin-top:12px; flex-wrap:wrap;">
+          <span style="font-family:'DM Mono',monospace; font-size:7px; border:1px solid var(--black); padding:2px 7px; background:var(--accent);">인증 셀러</span>
+          <span style="font-family:'DM Mono',monospace; font-size:7px; border:1px solid var(--black); padding:2px 7px;">거래 32건</span>
+        </div>
+      </div>
+
+      <!-- 스탯 -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--black); flex-shrink:0;">
+        <div style="background:var(--bg); padding:14px; text-align:center;">
+          <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:20px; color:var(--black);">14</div>
+          <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); margin-top:3px; letter-spacing:1px;">보유 피스</div>
+        </div>
+        <div style="background:var(--bg); padding:14px; text-align:center;">
+          <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:20px; color:var(--black);">32</div>
+          <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); margin-top:3px; letter-spacing:1px;">총 거래</div>
+        </div>
+        <div style="background:var(--bg); padding:14px; text-align:center;">
+          <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:20px; color:var(--black);">4.9</div>
+          <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); margin-top:3px; letter-spacing:1px;">평점</div>
+        </div>
+        <div style="background:var(--bg); padding:14px; text-align:center;">
+          <div style="font-family:'Unbounded',sans-serif; font-weight:900; font-size:20px; color:var(--black);">128</div>
+          <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); margin-top:3px; letter-spacing:1px;">팔로워</div>
+        </div>
+      </div>
+
+      <!-- 취향 태그 -->
+      <div style="padding:20px 24px; border-top:1px solid var(--border);">
+        <div style="font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2px; color:var(--mid); text-transform:uppercase; margin-bottom:10px;">취향 태그</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:3px 9px; background:var(--surface);">#Belgian Wave</span>
+          <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:3px 9px; background:var(--surface);">#Japanese Avant</span>
+          <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:3px 9px; background:var(--accent);">#Archive Only</span>
+          <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:3px 9px; background:var(--accent);">#90s–00s</span>
+          <span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:3px 9px;">#No Fast Fashion</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오른쪽: 옷장 + 거래 이력 -->
+    <div style="background:var(--bg);">
+      <!-- 탭 -->
+      <div style="display:flex; border-bottom:1.5px solid var(--black);" id="closetTabs">
+        <button onclick="setClosetTab('closet')" id="ctab-closet" style="padding:14px 22px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; border:none; border-bottom:2px solid var(--black); background:none; cursor:crosshair; color:var(--black);">내 옷장 (14)</button>
+        <button onclick="setClosetTab('history')" id="ctab-history" style="padding:14px 22px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; border:none; border-bottom:2px solid transparent; background:none; cursor:crosshair; color:var(--mid);">거래 이력 (32)</button>
+        <button onclick="setClosetTab('wishlist')" id="ctab-wishlist" style="padding:14px 22px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; border:none; border-bottom:2px solid transparent; background:none; cursor:crosshair; color:var(--mid);">위시리스트 (7)</button>
+      </div>
+
+      <!-- 옷장 패널 -->
+      <div id="panel-closet" style="padding:20px; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--black); margin:2px;">
+        <div style="background:var(--surface); cursor:crosshair; border:1px solid var(--black);">
+          <div style="aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; font-size:36px; background:rgba(14,13,12,0.04);">🧥</div>
+          <div style="padding:8px 10px; border-top:1px solid var(--border);">
+            <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); letter-spacing:1px;">Raf Simons</div>
+            <div style="font-size:10px; margin:2px 0;">Consumed Coat</div>
+            <div style="font-family:'DM Mono',monospace; font-size:8px;">₩3,200,000</div>
+          </div>
+        </div>
+        <div style="background:var(--surface); cursor:crosshair; border:1px solid var(--black);">
+          <div style="aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; font-size:36px; background:rgba(14,13,12,0.04);">🥿</div>
+          <div style="padding:8px 10px; border-top:1px solid var(--border);">
+            <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); letter-spacing:1px;">Margiela</div>
+            <div style="font-size:10px; margin:2px 0;">Tabi Boot</div>
+            <div style="font-family:'DM Mono',monospace; font-size:8px;">₩890,000</div>
+          </div>
+        </div>
+        <div style="background:var(--bg); cursor:crosshair; border:1px solid var(--black);">
+          <div style="aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; font-size:36px; background:rgba(14,13,12,0.04);">👖</div>
+          <div style="padding:8px 10px; border-top:1px solid var(--border);">
+            <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); letter-spacing:1px;">Helmut Lang</div>
+            <div style="font-size:10px; margin:2px 0;">Skinny Cargo</div>
+            <div style="font-family:'DM Mono',monospace; font-size:8px;">₩420,000</div>
+          </div>
+        </div>
+        <div style="background:var(--accent); cursor:crosshair; border:1px solid var(--black);">
+          <div style="aspect-ratio:3/4; display:flex; align-items:center; justify-content:center; font-size:36px; background:rgba(14,13,12,0.04);">👗</div>
+          <div style="padding:8px 10px; border-top:1px solid var(--border);">
+            <div style="font-family:'DM Mono',monospace; font-size:7px; color:var(--mid); letter-spacing:1px;">CDG</div>
+            <div style="font-size:10px; margin:2px 0;">Heart Hoodie</div>
+            <div style="font-family:'DM Mono',monospace; font-size:8px;">₩580,000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 거래 이력 패널 -->
+      <div id="panel-history" style="display:none; padding:2px;">
+        <div style="display:flex; flex-direction:column; gap:0;">
+          <div style="display:grid; grid-template-columns:80px 1fr 120px 80px 80px; gap:0; background:var(--black); padding:0;">
+            <div style="background:var(--bg); padding:10px 14px; font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; border-bottom:1px solid var(--border);">날짜</div>
+            <div style="background:var(--bg); padding:10px 14px; font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; border-bottom:1px solid var(--border); border-left:1px solid var(--border);">아이템</div>
+            <div style="background:var(--bg); padding:10px 14px; font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; border-bottom:1px solid var(--border); border-left:1px solid var(--border);">금액</div>
+            <div style="background:var(--bg); padding:10px 14px; font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; border-bottom:1px solid var(--border); border-left:1px solid var(--border);">구분</div>
+            <div style="background:var(--bg); padding:10px 14px; font-family:'DM Mono',monospace; font-size:8px; color:var(--mid); letter-spacing:1px; border-bottom:1px solid var(--border); border-left:1px solid var(--border);">상태</div>
+          </div>
+          <div style="display:grid; grid-template-columns:80px 1fr 120px 80px 80px; border-bottom:1px solid var(--border);">
+            <div style="padding:12px 14px; font-family:'DM Mono',monospace; font-size:9px; color:var(--mid);">04.12</div>
+            <div style="padding:12px 14px; font-size:11px; border-left:1px solid var(--border);">Raf Simons Consumed Coat '01</div>
+            <div style="padding:12px 14px; font-family:'DM Mono',monospace; font-size:11px; border-left:1px solid var(--border);">₩2,950,000</div>
+            <div style="padding:12px 14px; border-left:1px solid var(--border);"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 7px; background:var(--surface);">구매</span></div>
+            <div style="padding:12px 14px; border-left:1px solid var(--border);"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 7px; background:var(--surface);">완료</span></div>
+          </div>
+          <div style="display:grid; grid-template-columns:80px 1fr 120px 80px 80px; border-bottom:1px solid var(--border);">
+            <div style="padding:12px 14px; font-family:'DM Mono',monospace; font-size:9px; color:var(--mid);">03.28</div>
+            <div style="padding:12px 14px; font-size:11px; border-left:1px solid var(--border);">Helmut Lang Cargo '99</div>
+            <div style="padding:12px 14px; font-family:'DM Mono',monospace; font-size:11px; border-left:1px solid var(--border);">₩380,000</div>
+            <div style="padding:12px 14px; border-left:1px solid var(--border);"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 7px; background:var(--accent);">판매</span></div>
+            <div style="padding:12px 14px; border-left:1px solid var(--border);"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 7px; background:var(--surface);">완료</span></div>
+          </div>
+          <div style="display:grid; grid-template-columns:80px 1fr 120px 80px 80px;">
+            <div style="padding:12px 14px; font-family:'DM Mono',monospace; font-size:9px; color:var(--mid);">03.14</div>
+            <div style="padding:12px 14px; font-size:11px; border-left:1px solid var(--border);">Margiela Tabi Boot '12</div>
+            <div style="padding:12px 14px; font-family:'DM Mono',monospace; font-size:11px; border-left:1px solid var(--border);">₩840,000</div>
+            <div style="padding:12px 14px; border-left:1px solid var(--border);"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 7px; background:var(--surface);">구매</span></div>
+            <div style="padding:12px 14px; border-left:1px solid var(--border);"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 7px; background:var(--surface);">완료</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 위시리스트 패널 -->
+      <div id="panel-wishlist" style="display:none; padding:20px; display:none;">
+        <div style="display:flex; flex-direction:column; gap:2px; background:var(--black);">
+          <div style="display:flex; gap:0; background:var(--bg); align-items:center;">
+            <div style="width:60px; height:60px; background:var(--surface); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; border-right:1px solid var(--border);">👟</div>
+            <div style="flex:1; padding:10px 16px; border-right:1px solid var(--border);">
+              <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid);">Junya Watanabe × Levi's</div>
+              <div style="font-size:11px; margin-top:2px;">데님 패치워크 재킷 '03</div>
+            </div>
+            <div style="padding:10px 16px; font-family:'DM Mono',monospace; font-size:11px; border-right:1px solid var(--border); min-width:120px;">₩1,450,000</div>
+            <div style="padding:10px 16px;"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 8px; background:var(--accent); cursor:crosshair;">알림 설정</span></div>
+          </div>
+          <div style="display:flex; gap:0; background:var(--bg); align-items:center;">
+            <div style="width:60px; height:60px; background:var(--accent); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; border-right:1px solid var(--border);">🧤</div>
+            <div style="flex:1; padding:10px 16px; border-right:1px solid var(--border);">
+              <div style="font-family:'DM Mono',monospace; font-size:8px; color:var(--mid);">Yohji Yamamoto</div>
+              <div style="font-size:11px; margin-top:2px;">아시메트릭 울 블레이저 '05</div>
+            </div>
+            <div style="padding:10px 16px; font-family:'DM Mono',monospace; font-size:11px; border-right:1px solid var(--border); min-width:120px;">₩2,100,000</div>
+            <div style="padding:10px 16px;"><span style="font-family:'DM Mono',monospace; font-size:8px; border:1px solid var(--black); padding:2px 8px; background:var(--accent); cursor:crosshair;">알림 설정</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">
+    <div class="foot-logo-text">CULT · SOCIETY</div>
+  </div>
+  <div class="foot-copy">
+    WE DON'T FOLLOW. WE ARCHIVE.<br>
+    © 2026 CULT SOCIETY. ALL RIGHTS RESERVED.
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.f-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.f-tab').forEach(x => x.classList.remove('on'));
+      t.classList.add('on');
+    });
+  });
+
+  // 슬라이더
+  let sliderPos = 0;
+  const track = document.getElementById('sliderTrack');
+  function slide(dir) {
+    const cards = track.querySelectorAll('.s-card');
+    const cardW = cards[0].offsetWidth + 2;
+    const visible = 5;
+    const max = cards.length - visible;
+    sliderPos = Math.max(0, Math.min(sliderPos + dir, max));
+    track.style.transform = `translateX(-${sliderPos * cardW}px)`;
+  }
+
+  // 구매 방식 토글
+  function setMode(mode) {
+    const buyBtn = document.getElementById('mode-buy');
+    const bidBtn = document.getElementById('mode-bid');
+    const buyPanel = document.getElementById('panel-buy');
+    const bidPanel = document.getElementById('panel-bid');
+    if (mode === 'buy') {
+      buyBtn.style.background = 'var(--black)'; buyBtn.style.color = 'var(--bg)';
+      bidBtn.style.background = 'var(--bg)'; bidBtn.style.color = 'var(--black)';
+      buyPanel.style.display = 'block'; bidPanel.style.display = 'none';
+    } else {
+      bidBtn.style.background = 'var(--black)'; bidBtn.style.color = 'var(--bg)';
+      buyBtn.style.background = 'var(--bg)'; buyBtn.style.color = 'var(--black)';
+      bidPanel.style.display = 'block'; buyPanel.style.display = 'none';
+    }
+  }
+
+  // 입찰가 퀵 세팅
+  function setBid(val) {
+    document.getElementById('bidInput').value = val;
+  }
+
+  // 옷장 탭 토글
+  function setClosetTab(tab) {
+    ['closet','history','wishlist'].forEach(t => {
+      document.getElementById('panel-' + t).style.display = 'none';
+      const btn = document.getElementById('ctab-' + t);
+      btn.style.borderBottomColor = 'transparent';
+      btn.style.color = 'var(--mid)';
+    });
+    document.getElementById('panel-' + tab).style.display = tab === 'closet' ? 'grid' : 'block';
+    const activeBtn = document.getElementById('ctab-' + tab);
+    activeBtn.style.borderBottomColor = 'var(--black)';
+    activeBtn.style.color = 'var(--black)';
+  }
+</script>
+
+<!-- DETAIL PAGE OVERLAY -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetail(event)">
+  <div class="detail-box" onclick="event.stopPropagation()">
+    <button class="detail-close" onclick="document.getElementById('detailOverlay').classList.remove('open'); document.body.style.overflow='';">✕ 닫기</button>
+    <div class="detail-grid">
+      <div class="detail-img-col">
+        <div class="detail-main-img" id="detailMainImg">👞</div>
+        <div class="detail-thumbs">
+          <div class="detail-thumb on">👞</div>
+          <div class="detail-thumb">📸</div>
+          <div class="detail-thumb">📦</div>
+          <div class="detail-thumb">🏷️</div>
+        </div>
+      </div>
+      <div class="detail-info-col">
+        <div class="detail-tag-row">
+          <span class="detail-tag accent">CULT PIECE</span>
+          <span class="detail-tag">인증 상품</span>
+          <span class="detail-tag">안전결제</span>
+        </div>
+        <div>
+          <div class="detail-brand" id="detailBrand">Raf Simons</div>
+          <div class="detail-name" id="detailName">20SS Derby Shoes</div>
+          <div class="detail-season" id="detailSeason">2020 S/S · Size 43 · Grade A · 착용 2회</div>
+        </div>
+        <div class="detail-price-box">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(245,242,235,0.5);letter-spacing:1px;margin-bottom:4px;">현재 판매가</div>
+            <div class="detail-price" id="detailPrice">₩ 750,000</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="detail-pct" id="detailPct">+62%</div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:rgba(245,242,235,0.4);margin-top:4px;">발매가 ₩ 462,000 대비</div>
+          </div>
+        </div>
+
+        <!-- 시세 차트 -->
+        <div class="detail-chart-section">
+          <div class="detail-chart-label">
+            <span>거래가 추이</span>
+            <div class="chart-period-btns">
+              <button class="chart-period-btn on" onclick="setChartPeriod('3m',this)">3개월</button>
+              <button class="chart-period-btn" onclick="setChartPeriod('6m',this)">6개월</button>
+              <button class="chart-period-btn" onclick="setChartPeriod('1y',this)">1년</button>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--black);border:1.5px solid var(--black);margin-top:10px;">
+            <div style="background:var(--bg);padding:10px 12px;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--mid);letter-spacing:1px;">발매가</div>
+              <div id="detailRetail" style="font-family:'DM Mono',monospace;font-size:13px;margin-top:3px;">₩ 462,000</div>
+            </div>
+            <div style="background:var(--accent);padding:10px 12px;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:rgba(14,13,12,0.55);letter-spacing:1px;">52주 최고</div>
+              <div id="detailHigh52" style="font-family:'DM Mono',monospace;font-size:13px;margin-top:3px;">₩ 820,000</div>
+            </div>
+            <div style="background:var(--bg);padding:10px 12px;">
+              <div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--mid);letter-spacing:1px;">52주 최저</div>
+              <div id="detailLow52" style="font-family:'DM Mono',monospace;font-size:13px;margin-top:3px;">₩ 580,000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 거래 이력 -->
+        <div class="detail-history">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mid);text-transform:uppercase;margin-bottom:8px;">최근 거래 이력</div>
+          <div class="history-row" style="color:var(--mid);font-size:8px;border-bottom:1.5px solid var(--black);">
+            <span>날짜</span><span>컨디션</span><span>거래가</span><span>등락</span>
+          </div>
+          <div class="history-row"><span class="h-date">2026.04.18</span><span>Grade A · 43</span><span class="h-price">₩ 750,000</span><span class="h-diff-up">+3.4%</span></div>
+          <div class="history-row"><span class="h-date">2026.03.02</span><span>Grade A · 42</span><span class="h-price">₩ 725,000</span><span class="h-diff-up">+1.8%</span></div>
+          <div class="history-row"><span class="h-date">2026.01.15</span><span>Grade B+ · 43</span><span class="h-price">₩ 612,000</span><span class="h-diff-dn">-2.1%</span></div>
+          <div id="detailHistoryBody"><div class="history-row"><span class="h-date">2025.11.28</span><span>Grade A · 44</span><span class="h-price">₩ 625,000</span><span class="h-diff-up">+7.2%</span></div></div>
+        </div>
+
+        <div class="detail-buy-row">
+          <button class="detail-btn detail-btn-buy">즉시 구매</button>
+          <button class="detail-btn detail-btn-bid">입찰 제시</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const itemDB = {
+    yohji: {
+      emoji: '🧥', brand: 'Yohji Yamamoto', name: 'Packable Jacket',
+      season: 'OS · Grade A · 착용 3회', price: '₩ 220,000', pct: '↓9%',
+      retail: 242000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[230000,225000,220000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[250000,245000,238000,230000,225000,220000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[242000,240000,255000,260000,248000,245000,250000,245000,238000,230000,225000,220000] }
+      },
+      high52: '₩ 260,000', low52: '₩ 218,000',
+      history: [
+        {date:'2026.04.20', cond:'Grade A · OS', price:'₩ 220,000', diff:'↓1.3%', up:false},
+        {date:'2026.03.15', cond:'Grade A · OS', price:'₩ 225,000', diff:'↓2.2%', up:false},
+        {date:'2026.01.08', cond:'Grade A+ · OS', price:'₩ 238,000', diff:'↑1.7%', up:true},
+        {date:'2025.11.02', cond:'Grade A · OS', price:'₩ 250,000', diff:'↑2.0%', up:true}
+      ]
+    },
+    cdg: {
+      emoji: '👕', brand: 'Comme des Garçons', name: '로브 드 샹브르 그래픽 티',
+      season: 'M · Grade A · 착용 1회', price: '₩ 130,000', pct: '+21%',
+      retail: 107000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[118000,125000,130000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[100000,105000,112000,118000,125000,130000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[107000,108000,110000,105000,98000,100000,100000,105000,112000,118000,125000,130000] }
+      },
+      high52: '₩ 130,000', low52: '₩ 96,000',
+      history: [
+        {date:'2026.04.18', cond:'Grade A · M', price:'₩ 130,000', diff:'↑4.0%', up:true},
+        {date:'2026.03.01', cond:'Grade A · S', price:'₩ 125,000', diff:'↑5.9%', up:true},
+        {date:'2026.01.20', cond:'Grade B+ · M', price:'₩ 118,000', diff:'↑5.4%', up:true},
+        {date:'2025.10.11', cond:'Grade A · M', price:'₩ 100,000', diff:'↑2.0%', up:true}
+      ]
+    },
+    prada: {
+      emoji: '🧥', brand: 'Prada', name: '2011s Sports 나일론 자켓',
+      season: 'L · Grade A · 착용 2회', price: '₩ 380,000', pct: '+44%',
+      retail: 264000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[355000,368000,380000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[310000,320000,338000,355000,368000,380000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[264000,270000,285000,295000,308000,305000,310000,320000,338000,355000,368000,380000] }
+      },
+      high52: '₩ 380,000', low52: '₩ 262,000',
+      history: [
+        {date:'2026.04.22', cond:'Grade A · L', price:'₩ 380,000', diff:'↑3.3%', up:true},
+        {date:'2026.03.10', cond:'Grade A · M', price:'₩ 368,000', diff:'↑3.7%', up:true},
+        {date:'2026.01.25', cond:'Grade A+ · L', price:'₩ 338,000', diff:'↑5.3%', up:true},
+        {date:'2025.12.05', cond:'Grade A · L', price:'₩ 320,000', diff:'↑3.2%', up:true}
+      ]
+    },
+    rick: {
+      emoji: '👟', brand: 'Rick Owens', name: '지오바스켓 검정 박스 끈',
+      season: 'EU43 · Grade A · 착용 5회', price: '₩ 450,000', pct: '↓12%',
+      retail: 511000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[480000,465000,450000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[530000,515000,500000,480000,465000,450000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[511000,520000,535000,540000,538000,535000,530000,515000,500000,480000,465000,450000] }
+      },
+      high52: '₩ 542,000', low52: '₩ 448,000',
+      history: [
+        {date:'2026.04.15', cond:'Grade A · 43', price:'₩ 450,000', diff:'↓3.2%', up:false},
+        {date:'2026.03.08', cond:'Grade A+ · 42', price:'₩ 465,000', diff:'↓3.1%', up:false},
+        {date:'2026.01.30', cond:'Grade A · 43', price:'₩ 480,000', diff:'↓4.0%', up:false},
+        {date:'2025.12.12', cond:'Grade A · 44', price:'₩ 515,000', diff:'↓2.8%', up:false}
+      ]
+    },
+    raf: {
+      emoji: '👞', brand: 'Raf Simons', name: '20SS Derby Shoes',
+      season: '2020 S/S · Size 43 · Grade A · 착용 2회', price: '₩ 750,000', pct: '+62%',
+      retail: 462000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[680000,725000,750000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[605000,625000,625000,680000,725000,750000] },
+        '1y': { labels:['4월','5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[462000,490000,510000,555000,580000,570000,580000,625000,605000,625000,680000,725000,750000] }
+      },
+      high52: '₩ 820,000', low52: '₩ 460,000',
+      history: [
+        {date:'2026.04.18', cond:'Grade A · 43', price:'₩ 750,000', diff:'↑3.4%', up:true},
+        {date:'2026.03.02', cond:'Grade A · 42', price:'₩ 725,000', diff:'↑1.8%', up:true},
+        {date:'2026.01.15', cond:'Grade B+ · 43', price:'₩ 612,000', diff:'↓2.1%', up:false},
+        {date:'2025.11.28', cond:'Grade A · 44', price:'₩ 625,000', diff:'↑7.2%', up:true}
+      ]
+    },
+    margiela: {
+      emoji: '👕', brand: 'Maison Margiela', name: '마르지엘라 바디티',
+      season: 'M · Grade A · 착용 2회', price: '₩ 160,000', pct: '+18%',
+      retail: 136000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[148000,154000,160000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[130000,132000,140000,148000,154000,160000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[136000,138000,140000,135000,130000,128000,130000,132000,140000,148000,154000,160000] }
+      },
+      high52: '₩ 162,000', low52: '₩ 126,000',
+      history: [
+        {date:'2026.04.10', cond:'Grade A · M', price:'₩ 160,000', diff:'↑3.9%', up:true},
+        {date:'2026.03.05', cond:'Grade A · S', price:'₩ 154,000', diff:'↑4.1%', up:true},
+        {date:'2026.01.18', cond:'Grade B+ · M', price:'₩ 148,000', diff:'↑5.7%', up:true},
+        {date:'2025.10.20', cond:'Grade A · L', price:'₩ 130,000', diff:'↑1.6%', up:true}
+      ]
+    },
+    cdgHomme: {
+      emoji: '🧥', brand: 'Comme des Garçons Homme', name: '다나카 옴므 AD 1995',
+      season: 'M · Grade A · 착용 불상', price: '₩ 320,000', pct: '+89%',
+      retail: 169000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[295000,308000,320000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[258000,268000,280000,295000,308000,320000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[169000,175000,190000,210000,228000,240000,258000,268000,280000,295000,308000,320000] }
+      },
+      high52: '₩ 320,000', low52: '₩ 168,000',
+      history: [
+        {date:'2026.04.20', cond:'Grade A · M', price:'₩ 320,000', diff:'↑3.9%', up:true},
+        {date:'2026.03.12', cond:'Grade A · L', price:'₩ 308,000', diff:'↑4.4%', up:true},
+        {date:'2026.01.22', cond:'Grade B+ · M', price:'₩ 280,000', diff:'↑5.3%', up:true},
+        {date:'2025.11.15', cond:'Grade A · M', price:'₩ 268,000', diff:'↑3.9%', up:true}
+      ]
+    },
+    balenciaga: {
+      emoji: '👜', brand: 'Balenciaga', name: '시티 모터백 퍼플',
+      season: 'OS · Grade A+ · 미사용', price: '₩ 1,450,000', pct: '+112%',
+      retail: 684000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[1320000,1390000,1450000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[1180000,1220000,1280000,1320000,1390000,1450000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[684000,720000,780000,850000,920000,1000000,1080000,1180000,1220000,1280000,1320000,1390000,1450000] }
+      },
+      high52: '₩ 1,450,000', low52: '₩ 680,000',
+      history: [
+        {date:'2026.04.25', cond:'Grade A+ · OS', price:'₩ 1,450,000', diff:'↑4.3%', up:true},
+        {date:'2026.03.18', cond:'Grade A · OS', price:'₩ 1,390,000', diff:'↑5.3%', up:true},
+        {date:'2026.01.28', cond:'Grade A+ · OS', price:'₩ 1,280,000', diff:'↑4.9%', up:true},
+        {date:'2025.12.10', cond:'Grade A · OS', price:'₩ 1,220,000', diff:'↑3.4%', up:true}
+      ]
+    },
+    incarnation: {
+      emoji: '🧥', brand: 'Incarnation', name: '인카네이션 하이넥 자켓',
+      season: 'M · Grade A · 착용 1회', price: '₩ 1,800,000', pct: '+95%',
+      retail: 923000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[1650000,1720000,1800000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[1480000,1530000,1590000,1650000,1720000,1800000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[923000,960000,1020000,1100000,1200000,1320000,1400000,1480000,1530000,1590000,1650000,1720000,1800000] }
+      },
+      high52: '₩ 1,800,000', low52: '₩ 920,000',
+      history: [
+        {date:'2026.04.22', cond:'Grade A · M', price:'₩ 1,800,000', diff:'↑4.7%', up:true},
+        {date:'2026.03.14', cond:'Grade A · L', price:'₩ 1,720,000', diff:'↑4.2%', up:true},
+        {date:'2026.01.30', cond:'Grade A+ · M', price:'₩ 1,590,000', diff:'↑3.8%', up:true},
+        {date:'2025.12.08', cond:'Grade A · M', price:'₩ 1,530,000', diff:'↑3.4%', up:true}
+      ]
+    },
+    cp: {
+      emoji: '🧥', brand: 'C.P. Company', name: '고글후드 앙렌즈 바람막이',
+      season: 'M · Grade A · 착용 5회', price: '₩ 300,000', pct: '+28%',
+      retail: 234000,
+      chart: {
+        '3m': { labels:['2월','3월','4월'], data:[278000,289000,300000] },
+        '6m': { labels:['11월','12월','1월','2월','3월','4월'], data:[248000,255000,262000,278000,289000,300000] },
+        '1y': { labels:['5월','6월','7월','8월','9월','10월','11월','12월','1월','2월','3월','4월'], data:[234000,238000,242000,250000,255000,252000,248000,255000,262000,278000,289000,300000] }
+      },
+      high52: '₩ 305,000', low52: '₩ 232,000',
+      history: [
+        {date:'2026.04.17', cond:'Grade A · M', price:'₩ 300,000', diff:'↑3.8%', up:true},
+        {date:'2026.03.09', cond:'Grade B+ · L', price:'₩ 289,000', diff:'↑3.9%', up:true},
+        {date:'2026.01.24', cond:'Grade A · M', price:'₩ 262,000', diff:'↑2.7%', up:true},
+        {date:'2025.12.01', cond:'Grade A · M', price:'₩ 255,000', diff:'↑2.8%', up:true}
+      ]
+    }
+  };
+
+  const itemKeys = ['yohji','cdg','prada','rick','raf','margiela','cdgHomme','balenciaga','incarnation','cp'];
+  let priceChart = null;
+  let currentItem = null;
+
+  function initChart(period) {
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const d = currentItem.chart[period];
+    if (priceChart) priceChart.destroy();
+    priceChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: d.labels,
+        datasets: [{
+          data: d.data,
+          borderColor: '#0e0d0c',
+          borderWidth: 2,
+          pointBackgroundColor: '#d4e84a',
+          pointBorderColor: '#0e0d0c',
+          pointBorderWidth: 1.5,
+          pointRadius: 4,
+          fill: true,
+          backgroundColor: (ctx) => {
+            const g = ctx.chart.ctx.createLinearGradient(0,0,0,160);
+            g.addColorStop(0,'rgba(212,232,74,0.22)');
+            g.addColorStop(1,'rgba(212,232,74,0)');
+            return g;
+          },
+          tension: 0.35
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0e0d0c',
+            titleColor: '#d4e84a',
+            bodyColor: '#f5f2eb',
+            titleFont: { family: 'DM Mono', size: 10 },
+            bodyFont: { family: 'DM Mono', size: 11 },
+            callbacks: {
+              title: (i) => i[0].label,
+              label: (i) => '₩ ' + i.raw.toLocaleString()
+            },
+            padding: 10, cornerRadius: 0
+          }
+        },
+        scales: {
+          x: { grid:{color:'rgba(14,13,12,0.06)'}, ticks:{font:{family:'DM Mono',size:9},color:'#7a7670'} },
+          y: { grid:{color:'rgba(14,13,12,0.06)'}, ticks:{font:{family:'DM Mono',size:9},color:'#7a7670', callback: v => '₩'+(v/10000).toFixed(0)+'만'} }
+        }
+      }
+    });
+  }
+
+  function setChartPeriod(period, btn) {
+    document.querySelectorAll('.chart-period-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    initChart(period);
+  }
+
+  function renderHistory(item) {
+    const container = document.getElementById('detailHistoryBody');
+    container.parentElement.querySelectorAll('.history-row:not(:first-child)').forEach(r => r.remove());
+    container.innerHTML = item.history.map(h => `
+      <div class="history-row">
+        <span class="h-date">${h.date}</span>
+        <span>${h.cond}</span>
+        <span class="h-price">${h.price}</span>
+        <span class="${h.up ? 'h-diff-up' : 'h-diff-dn'}">${h.diff}</span>
+      </div>
+    `).join('');
+  }
+
+  function openDetail(key) {
+    currentItem = itemDB[key] || itemDB['raf'];
+    document.getElementById('detailMainImg').textContent = currentItem.emoji;
+    document.getElementById('detailBrand').textContent = currentItem.brand;
+    document.getElementById('detailName').textContent = currentItem.name;
+    document.getElementById('detailSeason').textContent = currentItem.season;
+    document.getElementById('detailPrice').textContent = currentItem.price;
+    document.getElementById('detailPct').textContent = currentItem.pct;
+    document.getElementById('detailHigh52').textContent = currentItem.high52;
+    document.getElementById('detailLow52').textContent = currentItem.low52;
+    document.getElementById('detailRetail').textContent = '₩ ' + currentItem.retail.toLocaleString();
+    renderHistory(currentItem);
+    document.querySelectorAll('.chart-period-btn').forEach((b,i) => b.classList.toggle('on', i===0));
+    document.getElementById('detailOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => initChart('3m'), 50);
+  }
+
+  function closeDetail(e) {
+    if (e && e.target !== document.getElementById('detailOverlay')) return;
+    document.getElementById('detailOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    if (priceChart) { priceChart.destroy(); priceChart = null; }
+  }
+
+  // 카드 클릭 → 해당 상품 상세
+  document.querySelectorAll('.s-card').forEach((card, i) => {
+    card.addEventListener('click', () => openDetail(itemKeys[i]));
+  });
+  document.querySelectorAll('.p-card').forEach((card, i) => {
+    card.addEventListener('click', () => openDetail(itemKeys[i]));
+  });
+
+  // nav 탭 스크롤 + active
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = document.getElementById(tab.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // 스크롤 위치에 따라 nav active 자동 업데이트
+  const sections = [
+    {id:'sec-explore', tab:'탐색'},
+    {id:'sec-grid', tab:'탐색'},
+    {id:'sec-price', tab:'시세'},
+    {id:'sec-archive', tab:'아카이브'},
+    {id:'sec-trade', tab:'거래'}
+  ];
+
+  window.addEventListener('scroll', () => {
+    let current = 'sec-explore';
+    sections.forEach(s => {
+      const el = document.getElementById(s.id);
+      if (el && window.scrollY >= el.offsetTop - 80) current = s.id;
+    });
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      const match = sections.find(s => s.id === current);
+      tab.classList.toggle('active', match && tab.textContent.trim() === match.tab);
+    });
+  });
+</script>
+</body>
+</html>
